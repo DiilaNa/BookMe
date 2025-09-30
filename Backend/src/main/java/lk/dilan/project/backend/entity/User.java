@@ -1,5 +1,6 @@
 package lk.dilan.project.backend.entity;
 
+import lk.dilan.project.backend.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +15,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 public class User {
     @Id
-    private Long id;
+    private String id;
     private String name;
     private String password;
     private String email;
-    private String role;
+    private String phone;
+    private Role role;
 }
