@@ -1,5 +1,6 @@
 package lk.dilan.project.backend.entity;
 
+import lk.dilan.project.backend.entity.enums.AccountStatus;
 import lk.dilan.project.backend.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +22,5 @@ public class User {
     private String email;
     private String phone;
     private Role role;
+    private AccountStatus status;
 }

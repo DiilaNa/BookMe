@@ -1,5 +1,7 @@
 package lk.dilan.project.backend.service.impl;
 
+import lk.dilan.project.backend.dto.login.LoginDto;
+import lk.dilan.project.backend.dto.login.LoginResponseDTO;
 import lk.dilan.project.backend.dto.login.SignUpDTO;
 import lk.dilan.project.backend.entity.User;
 import lk.dilan.project.backend.entity.enums.Role;
@@ -8,6 +10,8 @@ import lk.dilan.project.backend.service.UserService;
 import lk.dilan.project.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +38,27 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
         return "";
+    }
+
+    @Override
+    public LoginResponseDTO authenticate(LoginDto loginDTO) {
+        User user = userRepository.findByUsername(loginDTO.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User Name not Found"));
+
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())){
+            throw new BadCredentialsException("Invalid Credentials");
+        }
+        String token  = jwtUtil.generateToken(loginDTO.getUsername());
+        String refreshToken = jwtUtil.generateRefreshToken(loginDTO.getUsername());
+
+        return new LoginResponseDTO(
+                token,
+                refreshToken,
+                user.getId(),
+                user.getName(),
+                user.getRole().name(),
+                user.getStatus()
+
+        );
     }
 }

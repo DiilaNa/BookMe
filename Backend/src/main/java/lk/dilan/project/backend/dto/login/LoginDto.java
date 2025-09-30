@@ -1,5 +1,6 @@
 package lk.dilan.project.backend.dto.login;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
