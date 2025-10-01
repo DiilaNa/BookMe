@@ -54,11 +54,11 @@ public class UserServiceImpl implements UserService {
         String refreshToken = jwtUtil.generateRefreshToken(loginDTO.getUsername());
 
         return new LoginResponseDTO(
+                user.getId(),
                 token,
                 refreshToken,
-                user.getId(),
                 user.getName(),
-                user.getRole().name(),
+                user.getRole(),
                 user.getStatus()
 
         );
