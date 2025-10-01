@@ -1,21 +1,16 @@
-package lk.dilan.project.backend.entity;
+package lk.dilan.project.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDateTime;
 
-@Document(collection = "events")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class Events {
-    @Id
+public class EventsDTO {
     private String id;
     private String userID;/*FK from user table*/
     private String title;

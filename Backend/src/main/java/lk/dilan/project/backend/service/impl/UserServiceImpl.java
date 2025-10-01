@@ -26,11 +26,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String Register(SignUpDTO signUpDTO) {
-        if (userRepository.findByName(signUpDTO.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(signUpDTO.getUsername()).isPresent()) {
             throw new RuntimeException("username already exists");
         }
         User user = User.builder()
-                .name(signUpDTO.getUsername())
+                .username(signUpDTO.getUsername())
                 .password(passwordEncoder.encode(signUpDTO.getPassword()))
                 .role(Role.USER)
                 .email(signUpDTO.getEmail())
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponseDTO authenticate(LoginDto loginDTO) {
-        User user = userRepository.findByName(loginDTO.getUsername())
+        User user = userRepository.findByUsername(loginDTO.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User Name not Found"));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())){
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
                 user.getId(),
                 token,
                 refreshToken,
-                user.getName(),
+                user.getUsername(),
                 user.getRole(),
                 user.getStatus()
 

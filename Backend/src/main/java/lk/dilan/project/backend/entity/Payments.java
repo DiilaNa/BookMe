@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collation = "payments")
+@Document(collection = "payments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
