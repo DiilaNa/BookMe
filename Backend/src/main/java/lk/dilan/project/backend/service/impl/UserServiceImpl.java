@@ -4,6 +4,7 @@ import lk.dilan.project.backend.dto.login.LoginDto;
 import lk.dilan.project.backend.dto.login.LoginResponseDTO;
 import lk.dilan.project.backend.dto.login.SignUpDTO;
 import lk.dilan.project.backend.entity.User;
+import lk.dilan.project.backend.entity.enums.AccountStatus;
 import lk.dilan.project.backend.entity.enums.Role;
 import lk.dilan.project.backend.repository.UserRepository;
 import lk.dilan.project.backend.service.UserService;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String Register(SignUpDTO signUpDTO) {
-        if (userRepository.findByUsername(signUpDTO.getUsername()).isPresent()) {
+        if (userRepository.findByName(signUpDTO.getUsername()).isPresent()) {
             throw new RuntimeException("username already exists");
         }
         User user = User.builder()
@@ -34,15 +35,16 @@ public class UserServiceImpl implements UserService {
                 .role(Role.USER)
                 .email(signUpDTO.getEmail())
                 .phone(signUpDTO.getPhone())
+                .status(AccountStatus.ACTIVE)
                 .build();
 
         userRepository.save(user);
-        return "";
+        return "User Registered Successfully";
     }
 
     @Override
     public LoginResponseDTO authenticate(LoginDto loginDTO) {
-        User user = userRepository.findByUsername(loginDTO.getUsername())
+        User user = userRepository.findByName(loginDTO.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User Name not Found"));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())){

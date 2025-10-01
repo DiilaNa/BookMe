@@ -31,7 +31,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-       return username -> userRepository.findByUsername(username)
+       return username -> userRepository.findByName(username)
                .map(user -> new User(
                         user.getName(),
                        user.getPassword(),

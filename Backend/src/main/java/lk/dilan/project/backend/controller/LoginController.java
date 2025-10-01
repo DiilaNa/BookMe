@@ -19,7 +19,7 @@ public class LoginController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ApiResponseDto> register(@RequestBody SignUpDTO signUpDTO) {
         return ResponseEntity.ok(
                 new ApiResponseDto(
