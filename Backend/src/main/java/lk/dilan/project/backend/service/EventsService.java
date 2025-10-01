@@ -8,4 +8,6 @@ public interface EventsService {
     void saveEvent(EventsDTO eventsDTO);
 
     List<EventsDTO> getAllMyEvents(String userId);
+
+    void updateEvent(EventsDTO eventsDTO);
 }

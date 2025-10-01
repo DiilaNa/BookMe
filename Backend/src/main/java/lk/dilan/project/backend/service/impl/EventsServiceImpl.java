@@ -34,4 +34,20 @@ public class EventsServiceImpl implements EventsService {
          List<Events> events = eventsRepository.getAllByUserID(userId);
         return modelMapper.map(events,new TypeToken<List<EventsDTO>>(){}.getType());
     }
+
+    @Override
+    public void updateEvent(EventsDTO eventsDTO) {
+        Events existingEvent = eventsRepository.findById(eventsDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        existingEvent.setTitle(eventsDTO.getTitle());
+        existingEvent.setDescription(eventsDTO.getDescription());
+        existingEvent.setDate(eventsDTO.getDate());
+        existingEvent.setLocation(eventsDTO.getLocation());
+        existingEvent.setTotalSeats(eventsDTO.getTotalSeats());
+        existingEvent.setPrice(eventsDTO.getPrice());
+
+        eventsRepository.save(existingEvent);
+
+    }
 }

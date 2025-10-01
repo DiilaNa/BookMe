@@ -25,6 +25,16 @@ public class AdminController {
         ));
     }
 
+    @PostMapping("/updateEvent")
+    public ResponseEntity<ApiResponseDto> updateEvent(@RequestBody EventsDTO eventsDTO){
+        eventsService.updateEvent(eventsDTO);
+        return ResponseEntity.ok(new ApiResponseDto(
+                200,
+                "ok",
+                "Event's post Saved"
+        ));
+    }
+
     @GetMapping("/getMyEvents/{userId}")
     public ResponseEntity<ApiResponseDto> getMyEvents(@PathVariable String userId){
         List<EventsDTO> eventsDTOS = eventsService.getAllMyEvents(userId);
