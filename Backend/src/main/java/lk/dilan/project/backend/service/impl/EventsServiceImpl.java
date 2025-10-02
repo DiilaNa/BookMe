@@ -11,8 +11,10 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,19 @@ public class EventsServiceImpl implements EventsService {
         existingEvent.setTotalSeats(eventsDTO.getTotalSeats());
         existingEvent.setPrice(eventsDTO.getPrice());
 
+
         eventsRepository.save(existingEvent);
 
+    }
+
+    @Override
+    public List<EventsDTO> searchEvents(String keyword, String location, LocalDateTime startDate, LocalDateTime endDate) {
+        keyword = keyword == null ? "" : keyword;
+        location = location == null ? "" : location;
+        if (startDate == null) startDate = LocalDateTime.of(1970,1,1,0,0);
+        if (endDate == null) endDate = LocalDateTime.of(3000,1,1,0,0);
+
+        List<Events> results = eventsRepository.searchEvents(keyword, location, startDate, endDate);
+        return results.stream().map(event -> modelMapper.map(event, EventsDTO.class)).collect(Collectors.toList());
     }
 }

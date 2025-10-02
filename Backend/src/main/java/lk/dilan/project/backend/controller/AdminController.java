@@ -4,9 +4,11 @@ import lk.dilan.project.backend.dto.EventsDTO;
 import lk.dilan.project.backend.dto.login.ApiResponseDto;
 import lk.dilan.project.backend.service.EventsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -43,5 +45,15 @@ public class AdminController {
                 "ok",
                 eventsDTOS
         ));
+    }
+
+    @GetMapping("/search")
+    public List<EventsDTO> searchEvents(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
+    ) {
+        return eventsService.searchEvents(keyword, location, startDate, endDate);
     }
 }
