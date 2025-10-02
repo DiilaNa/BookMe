@@ -1,13 +1,13 @@
 package lk.dilan.project.backend.controller;
 
+import lk.dilan.project.backend.dto.PaymentsDTO;
 import lk.dilan.project.backend.dto.login.ApiResponseDto;
 import lk.dilan.project.backend.entity.Events;
 import lk.dilan.project.backend.service.EventsService;
+import lk.dilan.project.backend.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     private final EventsService eventsService;
+    private final PaymentService paymentService;
 
     @GetMapping("/loadEvents")
     public ResponseEntity<ApiResponseDto> getAllEvents() {
@@ -24,6 +25,16 @@ public class UserController {
                 200,
                 "ok",
                 events
+        ));
+    }
+
+    @PostMapping("/savePayment")
+    public ResponseEntity<ApiResponseDto> savePayment(@RequestBody PaymentsDTO paymentsDTO){
+        paymentService.savePayment(paymentsDTO);
+        return ResponseEntity.ok(new ApiResponseDto(
+                200,
+                "ok",
+                "Payment Saved"
         ));
     }
 }
