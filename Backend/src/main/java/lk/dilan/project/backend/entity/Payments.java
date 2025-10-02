@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class Payments {
     @Id
     private String id;
-    private String ticketId;
     private String userId;
     private double amount;
     private String paymentMethod;

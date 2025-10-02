@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,5 +62,11 @@ public class EventsServiceImpl implements EventsService {
 
         List<Events> results = eventsRepository.searchEvents(keyword, location, startDate, endDate);
         return results.stream().map(event -> modelMapper.map(event, EventsDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Events> loadAllEvents() {
+        List<Events> events = eventsRepository.findAll();
+        return modelMapper.map(events,new TypeToken<List<EventsDTO>>(){}.getType());
     }
 }
