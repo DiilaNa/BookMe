@@ -21,8 +21,5 @@ public class Payments {
     private double amount;
     private String paymentMethod;
     private PaymentStatus status;
-/*
-    private String transactionId; // reference from Stripe/PayPal
-*/
     private LocalDateTime createdAt = LocalDateTime.now();
 }
