@@ -1,0 +1,85 @@
+.login-page {
+  min-height: 100vh;
+  // Use the same background for a consistent look
+  background: linear-gradient(135deg, #6c63ff, #836fff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+}
+
+.login-card {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+
+  h1 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .alert {
+    background: #f4f4f4;
+    color: #444;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  button {
+    background-color: #6c63ff;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #594ae2;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  // Styling for the link back to sign up
+  .signup-link-container {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #666;
+
+    a {
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
