@@ -8,24 +8,30 @@ interface FormInputProps {
     value: string,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     required?: boolean,
-    errorMessage?: string
+    errorMessage?: string,
+    min?: string,
+    placeholder?: string,
+    step?: string
 }
 
-const FormInput = ({label, type, name, value, onChange, required,errorMessage}: FormInputProps) => {
+const FormInput = ({label, type, name, value, onChange, required, errorMessage, min, placeholder, step}: FormInputProps) => {
     const inputClass = errorMessage ? 'input-error' : '';
     return (
         <div className="form-group">
             <label htmlFor={name}>{label}</label>
-                <input
-                    id={name}
-                    type={type}
-                    name={name}
-                    value={value}
-                    onChange={onChange}
-                    required={required}
-                    className={inputClass}
-                />
-            {errorMessage &&(
+            <input
+                id={name}
+                type={type}
+                name={name}
+                value={value}
+                onChange={onChange}
+                required={required}
+                className={inputClass}
+                min={min}
+                placeholder={placeholder}
+                step={step}
+            />
+            {errorMessage && (
                 <span className="error-message">{errorMessage}</span>
             )}
         </div>
