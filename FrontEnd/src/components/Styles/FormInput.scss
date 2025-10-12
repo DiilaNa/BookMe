@@ -1,0 +1,51 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; // Ensure elements take full width
+  margin-bottom: 1.5rem; // Increase margin for better spacing
+
+  /*align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;*/
+
+  label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.3rem;
+    text-align: left;
+  }
+
+  input {
+    padding: 0.6rem 0.8rem;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: #6c63ff;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+    }
+  }
+}
+
+/* ------------------- ERROR STYLING ------------------- */
+
+// (rendered below the input)
+.error-message {
+  color: #dc3545; /* Red color for errors */
+  font-size: 0.75rem;
+  margin-top: 0.3rem;
+  text-align: left;
+}
+
+// Style for the input border when there is an error
+.input-error {
+  border-color: #dc3545 !important;
+  // Remove the focus shadow for error state to keep it clean
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+  }
+}
