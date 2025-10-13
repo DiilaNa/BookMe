@@ -4,6 +4,7 @@ import EventPostCard from "../components/EventPostsCards.tsx";
 import "./Styles/Admin.scss";
 import ActionCard from "../components/Card.tsx";
 import ReportModal from "../pages/Modals/Report.tsx"
+import EditEventModel from "./Modals/EditEventModel.tsx";
 
 interface EventPost {
     id: string;
@@ -23,6 +24,8 @@ const AdminDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState<EventPost | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // NEW: State for Edit modal
+    const [eventToEdit, setEventToEdit] = useState<EventPost | null>(null); // NEW: State for event being edited
 
 
     const fetchEvents = async () => {
@@ -59,9 +62,15 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleActionClick = (action: string) => {
-        console.log(`Navigating to ${action}...`);
+    const handleEditEvent = () => {
+        if (events.length > 0){
+            setEventToEdit(events[0]);
+            setIsEditModalOpen(true);
+        }else {
+            alert("No events posted yet to manage.");
+        }
     };
+
 
     const renderEventPosts = () => {
         if (isLoading) {
@@ -116,7 +125,7 @@ const AdminDashboard = () => {
                     title="Manage Inventory"
                     description="Adjust available seats and ticket prices for existing events."
                     buttonContent="Edit Events"
-                    onButtonClick={() => handleActionClick('Reports')}
+                    onButtonClick={handleEditEvent}
                 />
 
                 <div className="event-posts-list">
@@ -134,6 +143,13 @@ const AdminDashboard = () => {
                 isOpen={isReportModalOpen}
                 onClose={() => setIsReportModalOpen(false)}
                 event={selectedEvent}
+            />
+
+            <EditEventModel
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                eventToEdit={eventToEdit}
+                onSuccess={handleEventPosted}
             />
         </div>
     );

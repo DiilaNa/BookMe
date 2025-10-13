@@ -7,7 +7,6 @@ import "./Styles/Card.scss";
         buttonContent:string,
         buttonClassName?: string,
         onButtonClick: () => void,
-
  }
 
  const ActionCard = ({
