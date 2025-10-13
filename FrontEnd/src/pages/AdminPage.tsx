@@ -3,6 +3,7 @@ import EventFormModal from "./Modals/EventModel.tsx";
 import EventPostCard from "../components/EventPostsCards.tsx";
 import "./Styles/Admin.scss";
 import ActionCard from "../components/Card.tsx";
+import ReportModal from "../pages/Modals/Report.tsx"
 
 interface EventPost {
     id: string;
@@ -18,8 +19,11 @@ interface EventPost {
 
 const AdminDashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [events, setEvents] = useState<EventPost[]>([]); // State to hold events
-    const [isLoading, setIsLoading] = useState(true); // State for loading status
+    const [events, setEvents] = useState<EventPost[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<EventPost | null>(null);
+
 
     const fetchEvents = async () => {
         setIsLoading(true);
@@ -37,21 +41,28 @@ const AdminDashboard = () => {
         }
     };
 
-    useEffect(() => {
-        fetchEvents();
-    }, []);
+    useEffect(() => {fetchEvents();}, []);
 
     const handleEventPosted = (title: string) => {
-        setIsModalOpen(false); // Close the modal
+        setIsModalOpen(false);
         alert(`🎉 Event "${title}" successfully posted and ready for sale!`);
         fetchEvents();
     };
 
+
+    const handleGoToReports = () => {
+        if (events.length > 0) {
+            setSelectedEvent(events[0]);
+            setIsReportModalOpen(true);
+        } else {
+            alert("No events posted yet to view a report.");
+        }
+    };
+
     const handleActionClick = (action: string) => {
         console.log(`Navigating to ${action}...`);
-    }
+    };
 
-    // FIX 5: Conditional rendering for the event posts section
     const renderEventPosts = () => {
         if (isLoading) {
             return <div className="no-posts-message"><h3>Loading Events...</h3></div>;
@@ -83,7 +94,6 @@ const AdminDashboard = () => {
             </header>
 
             <div className="dashboard-content">
-                {/* Action Cards at the top */}
                 <ActionCard
                     icon="➕"
                     title=" Post a New Event"
@@ -98,7 +108,7 @@ const AdminDashboard = () => {
                     title="View Analytics"
                     description="Check sales performance, revenue reports, and event popularity metrics."
                     buttonContent="Go to Reports"
-                    onButtonClick={() => handleActionClick('Reports')}
+                    onButtonClick={handleGoToReports}
                 />
 
                 <ActionCard
@@ -106,7 +116,7 @@ const AdminDashboard = () => {
                     title="Manage Inventory"
                     description="Adjust available seats and ticket prices for existing events."
                     buttonContent="Edit Events"
-                    onButtonClick={() => handleActionClick('Inventory')}
+                    onButtonClick={() => handleActionClick('Reports')}
                 />
 
                 <div className="event-posts-list">
@@ -119,6 +129,11 @@ const AdminDashboard = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSuccess={handleEventPosted}
+            />
+            <ReportModal
+                isOpen={isReportModalOpen}
+                onClose={() => setIsReportModalOpen(false)}
+                event={selectedEvent}
             />
         </div>
     );
