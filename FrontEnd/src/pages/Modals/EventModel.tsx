@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import type { FormEvent } from "react";
-import FormInput from "../components/FormInput.tsx";
-import "./Styles/EventModel.scss";
-import ImageUpload from "../components/ImageUpload.tsx";
+import FormInput from "../../components/FormInput.tsx";
+import "../Styles/EventModel.scss";
+import ImageUpload from "../../components/ImageUpload.tsx";
 
 // Define the shape of the data based on your EventsDTO
 interface EventForm {

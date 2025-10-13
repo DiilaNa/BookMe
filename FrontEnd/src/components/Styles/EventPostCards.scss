@@ -1,0 +1,108 @@
+// Admin.scss (or EventPostCard.scss)
+
+// Variables (Ensure these are defined or imported)
+$primary-color: #6c63ff;
+$text-color: #333;
+$light-text-color: #777;
+$card-bg: #fff;
+$shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+// Style for the dynamic event post list
+.event-posts-list {
+  grid-column: 1 / -1; /* Occupy the entire width of the dashboard-content grid */
+  margin-top: 2rem;
+
+  h2 {
+    font-size: 1.8rem;
+    color: $primary-color;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+}
+
+// Style for the EventPostCard component
+.event-post-card {
+  padding: 0; /* Remove padding from the inherited action-card */
+  overflow: hidden;
+
+  .event-image-container {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+
+    .event-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures image covers the area without distortion */
+      transition: transform 0.3s ease;
+    }
+  }
+
+  &:hover .event-image {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+
+  .card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.3rem;
+  }
+
+  .event-details, .event-description {
+    color: $light-text-color;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-stats {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $text-color;
+
+    .stat-item:last-child {
+      color: $primary-color;
+    }
+  }
+
+  // Ensure the button is at the bottom edge
+  .action-button {
+    margin-top: auto;
+    border-radius: 0;
+    border-top: 1px solid #eee;
+  }
+}
+
+.no-posts-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: #f0f7ff;
+  border: 2px dashed $primary-color;
+  border-radius: 12px;
+  color: $light-text-color;
+
+  h3 {
+    color: $primary-color;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+  p {
+    font-size: 1.1rem;
+  }
+}

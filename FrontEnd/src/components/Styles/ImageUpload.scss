@@ -1,11 +1,7 @@
-// Styles/ImageUploadInput.scss (or integrated block in EventModel.scss)
-
 $primary-color: #6c63ff;
 $text-color: #333;
 
 .image-upload-group {
-  // Base container, inheriting flex properties from .form-group
-
   .file-preview {
     // Style for the text showing the selected file name
     font-size: 0.6rem;
@@ -17,7 +13,6 @@ $text-color: #333;
   }
 
   input[type="file"] {
-    // General styling applied to the entire input box to match other fields
     padding: 0.1rem 0.2rem;
     border: 1px solid #ddd;
     border-radius: 6px;
