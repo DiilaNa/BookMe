@@ -1,8 +1,8 @@
-
 import { useState, useMemo } from "react";
 import type { FormEvent } from "react";
 import FormInput from "../components/FormInput.tsx";
 import "./Styles/EventModel.scss";
+import ImageUpload from "../components/ImageUpload.tsx";
 
 // Define the shape of the data based on your EventsDTO
 interface EventForm {
@@ -12,6 +12,9 @@ interface EventForm {
     location: string;
     totalSeats: number;
     price: number;
+    eventImageBase64: string | null;
+    // FIX 1: Add state field for displaying the file name to the user
+    eventImageFileName: string | null;
 }
 
 const initialFormState: EventForm = {
@@ -21,6 +24,9 @@ const initialFormState: EventForm = {
     location: "",
     totalSeats: 0,
     price: 0.00,
+    eventImageBase64: null,
+    // FIX 2: Initialize the new file name state field
+    eventImageFileName: null,
 };
 
 interface EventFormModalProps {
@@ -56,6 +62,36 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
         setValidationErrors(prev => ({ ...prev, [name]: "" }));
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null;
+
+        if (file) {
+            // Check file size (optional, but good practice for Base64 limits)
+            if (file.size > 2 * 1024 * 1024) { // Limit to 2MB
+                setValidationErrors(prev => ({ ...prev, image: "Image size must be less than 2MB." }));
+                // Use null for both base64 and file name on error
+                setForm(prev => ({ ...prev, eventImageBase64: null, eventImageFileName: null }));
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // reader.result is the Base64 string (e.g., "data:image/jpeg;base64,.....")
+                setForm(prev => ({
+                    ...prev,
+                    eventImageBase64: reader.result as string, // Save the Base64 string
+                    eventImageFileName: file.name // Save the file name for display
+                }));
+                setValidationErrors(prev => ({ ...prev, image: "" }));
+            };
+            // Read the file content as a Data URL (which produces the Base64 string)
+            reader.readAsDataURL(file);
+        } else {
+            // Reset state if file selection is cancelled
+            setForm(prev => ({ ...prev, eventImageBase64: null, eventImageFileName: null }));
+        }
+    };
+
     const validateForm = () => {
         const errors: Record<string, string> = {};
         let isValid = true;
@@ -80,6 +116,11 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
             errors.price = "Price cannot be negative.";
             isValid = false;
         }
+        // Validation check for image error added during file selection
+        if (validationErrors.image) {
+            isValid = false;
+        }
+
 
         setValidationErrors(errors);
         return isValid;
@@ -94,19 +135,40 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
 
         setLoading(true);
 
+        // Prepare the JSON payload including the Base64 image string
+        const payload = {
+            title: form.title,
+            description: form.description,
+            date: form.date,
+            location: form.location,
+            totalSeats: form.totalSeats,
+            price: form.price,
+            imageBase64: form.eventImageBase64, // The name must match the Spring Boot DTO field
+        };
+
         try {
-            // 💡 API Call Placeholder
-            // const response = await postNewEvent(form);
 
-            console.log("Event Data Posted:", form);
+            const response = await fetch('/api/events', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
 
-            // Clear form and notify parent on success
+            if (!response.ok) {
+                throw new Error("Failed to post event.");
+            }
+
+            // Assuming the API call was successful
+            // const result = await response.json(); // Uncomment this line if your backend returns data
+
+            console.log("Event Data Posted:", payload);
+
             setForm(initialFormState);
             onSuccess(form.title);
 
         } catch (err) {
             // Show error within the modal if API fails
-            setValidationErrors({ api: "Failed to post event. Check server status." });
+            setValidationErrors({ api: "Failed to post event. Check server status or file size." });
         } finally {
             setLoading(false);
         }
@@ -121,7 +183,6 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
                 </header>
 
                 <div className="modal-body">
-                    {validationErrors.api && <div className="alert error">{validationErrors.api}</div>}
 
                     <form onSubmit={handleSubmit} className="event-form">
 
@@ -199,6 +260,16 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
                                 min="0"
                                 errorMessage={validationErrors.price}
                             />
+                        </div>
+
+                        <div className="form-group image-upload-group">
+                            <ImageUpload
+                                onFileChange={handleFileChange}
+                                fileName={form.eventImageFileName}
+                                errorMessage={validationErrors.image}
+                                 required={true}
+                            />
+
                         </div>
 
                         <button type="submit" disabled={loading} className="submit-button">

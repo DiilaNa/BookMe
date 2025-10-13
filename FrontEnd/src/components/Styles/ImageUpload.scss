@@ -1,0 +1,50 @@
+// Styles/ImageUploadInput.scss (or integrated block in EventModel.scss)
+
+$primary-color: #6c63ff;
+$text-color: #333;
+
+.image-upload-group {
+  // Base container, inheriting flex properties from .form-group
+
+  .file-preview {
+    // Style for the text showing the selected file name
+    font-size: 0.6rem;
+    color: $primary-color;
+    margin-top: 0.6rem;
+    font-weight: 500;
+    border-bottom: 1px dotted rgba($primary-color, 0.5);
+    padding-bottom: 1px;
+  }
+
+  input[type="file"] {
+    // General styling applied to the entire input box to match other fields
+    padding: 0.1rem 0.2rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+    background-color: #f9f9f9;
+    height: auto;
+
+    &::-webkit-file-upload-button,
+    &::file-selector-button {
+      background-color: #eee;
+      color: $text-color;
+      font-weight: 500;
+      padding: 0.2rem 0.3rem;
+      border: none;
+      border-right: 1px solid #ddd;
+      margin-right: 0.8rem;
+      border-radius: 1px 0 0 2px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+    }
+  }
+}

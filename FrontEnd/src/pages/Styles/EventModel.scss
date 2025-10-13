@@ -164,3 +164,71 @@ $error-color: #dc3545;
     box-shadow: none;
   }
 }
+
+/*----------------------------------------------------------------*/
+  // EventModel.scss
+
+  // ... (Rest of your EventModel.scss code is fine)
+
+  // Style for the container housing the file input
+.image-upload-group {
+  // Inherits general form-group styling
+
+  .file-preview {
+    font-size: 0.9rem;
+    color: $primary-color;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    border-bottom: 1px dotted rgba($primary-color, 0.5);
+    padding-bottom: 2px;
+  }
+
+  input[type="file"] {
+    // FIX 1: Adjust padding to match the 0.6rem 0.8rem from the generic input style.
+    // NOTE: File inputs often ignore horizontal padding, but we set it for consistency.
+    padding: 0.6rem 0.8rem;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+    background-color: #f9f9f9; // Light background helps it stand out slightly
+    height: auto; // Ensure height adjusts naturally
+
+    // FIX 2: Explicitly style the pseudo-element button (Webkit/Blink browsers)
+    &::-webkit-file-upload-button {
+      background-color: #eee;
+      color: $text-color;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem; /* Match the vertical padding of the main input */
+      border: none;
+      border-right: 1px solid #ddd;
+      margin-right: 0.8rem;
+      border-radius: 6px 0 0 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    // Fallback/Standard button styling (might be ignored by some browsers)
+    &::file-selector-button {
+      background-color: #eee;
+      color: $text-color;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-right: 1px solid #ddd;
+      margin-right: 0.8rem;
+      border-radius: 6px 0 0 6px;
+      cursor: pointer;
+    }
+
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      // FIX 3: Adopt the exact focus box-shadow from the generic input styles
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+    }
+  }
+}
