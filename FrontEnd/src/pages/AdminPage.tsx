@@ -1,6 +1,7 @@
 import { useState } from "react";
 import EventFormModal from "./EventModel.tsx"; // 👈 New Modal Component
 import "./Styles/Admin.scss";
+import ActionCard from "../components/Card.tsx";
 
 const AdminDashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,35 +19,32 @@ const AdminDashboard = () => {
             </header>
 
             <div className="dashboard-content">
-                <div className="action-card new-event-card">
-                    <div className="card-icon">➕</div>
-                    <h2>Post a New Event</h2>
-                    <p>Create a fresh listing for university events, set ticket details, and publish.</p>
-                    <button
-                        className="action-button primary"
-                        onClick={() => setIsModalOpen(true)}
-                    >
-                        Add New Event Post
-                    </button>
-                </div>
+                <ActionCard
+                    icon="➕"
+                    title=" Post a New Event"
+                    description="create a fresh listing for university events, set ticket details, and publish."
+                    buttonContent="Add New Event Post"
+                    buttonClassName="primary"
+                    onButtonClick={() => setIsModalOpen(true)}
+                />
 
-                {/* Placeholder for other admin cards */}
-                <div className="action-card stats-card">
-                    <div className="card-icon">📊</div>
-                    <h2>View Analytics</h2>
-                    <p>Check sales performance, revenue reports, and event popularity metrics.</p>
-                    <button className="action-button secondary">Go to Reports</button>
-                </div>
+                <ActionCard
+                    icon="📊"
+                    title="View Analytics"
+                    description="Check sales performance, revenue reports, and event popularity metrics."
+                    buttonContent="Go to Reports"
+                    onButtonClick={()=>handleEventPosted}
+                />
 
-                <div className="action-card inventory-card">
-                    <div className="card-icon">🎫</div>
-                    <h2>Manage Inventory</h2>
-                    <p>Adjust available seats and ticket prices for existing events.</p>
-                    <button className="action-button secondary">Edit Events</button>
-                </div>
+                <ActionCard
+                    icon="🎫"
+                    title="Manage Inventory"
+                    description="Adjust available seats and ticket prices for existing events."
+                    buttonContent="Edit Events"
+                    onButtonClick={()=> handleEventPosted}
+                />
             </div>
 
-            {/* The Modal Component */}
             <EventFormModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
