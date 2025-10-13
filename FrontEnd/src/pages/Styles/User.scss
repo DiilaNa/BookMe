@@ -1,0 +1,205 @@
+// Styles/UserEventsPage.scss
+
+$primary-color: #6c63ff;
+$secondary-color: #836fff;
+$text-color: #333;
+$light-text-color: #777;
+$bg-color: #f4f7fa;
+$card-bg: #fff;
+$shadow-soft: 0 6px 15px rgba(0, 0, 0, 0.08);
+$shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+.user-events-page {
+  min-height: 100vh;
+  background-color: $bg-color;
+  padding: 2rem 1rem;
+  font-family: 'Inter', sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+      font-size: 2.8rem;
+      color: $primary-color;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      color: $light-text-color;
+      font-size: 1.1rem;
+    }
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    color: $text-color;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+}
+
+// --- Shared Card Styles ---
+
+.event-card {
+  background: $card-bg;
+  border-radius: 12px;
+  box-shadow: $shadow-soft;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-deep;
+  }
+
+  .event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .buy-button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+
+    &.primary-buy-button {
+      background-color: $primary-color;
+      color: white;
+      &:hover { background-color: darken($primary-color, 10%); }
+    }
+    &.secondary-buy-button {
+      background-color: #eee;
+      color: $text-color;
+      &:hover { background-color: #ddd; }
+    }
+  }
+}
+
+// --- Featured Card (Most Recent) ---
+
+.featured-card {
+  flex-direction: row;
+  height: 350px;
+  margin-bottom: 3rem;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .featured-image-wrapper {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+
+    @media (max-width: 900px) {
+      width: 100%;
+      height: 250px;
+    }
+  }
+
+  .featured-content {
+    width: 50%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @media (max-width: 900px) {
+      width: 100%;
+    }
+
+    .card-badge {
+      background-color: $secondary-color;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      width: fit-content;
+    }
+
+    h3 {
+      font-size: 2rem;
+      color: $text-color;
+      margin: 0.8rem 0;
+    }
+
+    .event-meta {
+      p {
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        color: $light-text-color;
+      }
+      strong {
+        color: $primary-color;
+        font-size: 1.3rem;
+      }
+    }
+
+    .buy-button {
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+// --- Standard Card ---
+
+.standard-card {
+  .card-image-wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+
+    .card-price {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: $primary-color;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-weight: 700;
+      z-index: 10;
+    }
+  }
+
+  .card-body {
+    padding: 1rem 1.5rem;
+    flex-grow: 1;
+
+    h4 {
+      font-size: 1.3rem;
+      color: $text-color;
+      margin-bottom: 0.5rem;
+    }
+
+    .event-date, .event-location {
+      font-size: 0.95rem;
+      color: $light-text-color;
+      margin-bottom: 0.3rem;
+    }
+  }
+
+  .card-footer {
+    padding: 0 1.5rem 1.5rem;
+  }
+}

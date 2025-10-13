@@ -4,6 +4,7 @@ import SignUp from './pages/SignUp.tsx'
 import Login from "./pages/Login.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
+import UserPage from "./pages/UserPage.tsx";
 
 function App() {
     return<div className="app">
@@ -12,6 +13,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/user" element={<UserPage />} />
         </Routes>
     </div>
 }
