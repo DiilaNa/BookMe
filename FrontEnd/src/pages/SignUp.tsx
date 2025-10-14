@@ -1,33 +1,31 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { Link } from "react-router-dom"; // 👈 New: Import Link for navigation
+import {Link, useNavigate} from "react-router-dom"; // 👈 New: Import Link for navigation
 import "./Styles/SignUp.scss";
 import FormInput from "../components/FormInput.tsx";
-
-/*
-import { signUpUser } from "../../services/api";
-*/
+import {signUpUser} from "../api/authService.ts";
 
 // 1. Define Regex Patterns
 const validationPatterns = {
     password: new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"),
     email: new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"),
     phone: new RegExp("^\\d{10}$"),
-    name: new RegExp("^[a-zA-Z\\s]{3,}$"),
+    username: new RegExp("^[a-zA-Z\\s]{3,}$"),
 };
 
 interface SignUpForm {
-    name: string;
+    username: string;
     email: string;
     password: string;
     phone: string
 }
 
 const SignUp = () => {
-    const [form, setForm] = useState<SignUpForm>({ name: "", email: "", password: "",phone : ""});
+    const [form, setForm] = useState<SignUpForm>({ username: "", email: "", password: "",phone : ""});
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+    const navigate = useNavigate();
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,8 +40,8 @@ const SignUp = () => {
         const errors: Record<string, string> = {};
         let isValid = true;
 
-        if (!validationPatterns.name.test(form.name)) {
-            errors.name = "Name must be at least 3 characters and contain only letters/spaces.";
+        if (!validationPatterns.username.test(form.username)) {
+            errors.username = "Name must be at least 3 characters and contain only letters/spaces.";
             isValid = false;
         }
 
@@ -78,10 +76,13 @@ const SignUp = () => {
         setLoading(true);
 
         try {
+            console.log(form + "this is inside try catch")
+            await signUpUser(form);
             setMessage("✅ Account created successfully!");
-            setForm({ name: "", email: "", password: "", phone:""});
+            setForm({ username: "", email: "", password: "", phone: "" });
+            navigate("/")
         } catch (err: any) {
-            setMessage(`❌ ${err.message}`);
+            setMessage(`❌ ${err.response?.data?.message || "Signup failed"}`);
         } finally {
             setLoading(false);
         }
@@ -99,11 +100,11 @@ const SignUp = () => {
                     <FormInput
                         label="User Name"
                         type="text"
-                        name="name"
-                        value={form.name}
+                        name="username"
+                        value={form.username}
                         onChange={handleChange}
                         required
-                        errorMessage={validationErrors.name}
+                        errorMessage={validationErrors.username}
                     />
                     <FormInput
                         label="Email Address"
