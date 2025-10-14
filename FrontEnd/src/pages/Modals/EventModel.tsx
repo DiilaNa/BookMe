@@ -3,17 +3,8 @@ import type { FormEvent } from "react";
 import FormInput from "../../components/FormInput.tsx";
 import "../Styles/EventModel.scss";
 import ImageUpload from "../../components/ImageUpload.tsx";
-
-interface EventForm {
-    title: string;
-    description: string;
-    date: string;
-    location: string;
-    totalSeats: number;
-    price: number;
-    eventImageBase64: string | null;
-    eventImageFileName: string | null;
-}
+import {postNewEvent} from "../../api/authService.ts";
+import type {EventForm} from "../../types/Events.ts";
 
 const initialFormState: EventForm = {
     title: "",
@@ -126,34 +117,8 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
 
         setLoading(true);
 
-        // Prepare the JSON payload including the Base64 image string
-        const payload = {
-            title: form.title,
-            description: form.description,
-            date: form.date,
-            location: form.location,
-            totalSeats: form.totalSeats,
-            price: form.price,
-            imageBase64: form.eventImageBase64, // The name must match the Spring Boot DTO field
-        };
-
         try {
-
-            const response = await fetch('/api/events', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to post event.");
-            }
-
-            // Assuming the API call was successful
-            // const result = await response.json(); // Uncomment this line if your backend returns data
-
-            console.log("Event Data Posted:", payload);
-
+            await postNewEvent(form);
             setForm(initialFormState);
             onSuccess(form.title);
 

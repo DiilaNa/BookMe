@@ -5,7 +5,6 @@ const api = axios.create({
     headers: { "Content-Type": "application/json" },
 });
 
-// Attach token only if request is not public
 api.interceptors.request.use((config) => {
     const publicEndpoints = ["/auth/login", "/auth/register", "/auth/refresh-token"];
 
@@ -17,36 +16,37 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// Handle 401 errors → refresh token flow
 api.interceptors.response.use(
     (res) => res,
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true;
 
             const refreshToken = localStorage.getItem("refreshToken");
             if (!refreshToken) {
                 console.warn("No refresh token found.");
-                window.location.href = "/login";
+                localStorage.clear();
+                window.location.href = "/";
                 return Promise.reject(error);
             }
 
             try {
-                const res = await axios.post("http://localhost:8080/auth/refresh-token", {
-                    refreshToken,
-                });
+                const res = await axios.post("http://localhost:8080/auth/refresh-token", { refreshToken });
 
-                localStorage.setItem("accessToken", res.data.accessToken);
-                localStorage.setItem("refreshToken", res.data.refreshToken);
+                const token = res.data?.data || res.data;
 
-                // Retry original request
-                api.defaults.headers.Authorization = `Bearer ${res.data.accessToken}`;
-                return api(originalRequest);
+                if (!token?.accessToken) throw new Error("Invalid refresh token response");
+
+                localStorage.setItem("accessToken", token.accessToken);
+                localStorage.setItem("refreshToken", token.refreshToken);
+
+                originalRequest.headers.Authorization = `Bearer ${token.accessToken}`;
+                return axios(originalRequest);
             } catch (refreshErr) {
                 localStorage.clear();
-                window.location.href = "/login";
+                window.location.href = "/";
                 return Promise.reject(refreshErr);
             }
         }
@@ -56,3 +56,4 @@ api.interceptors.response.use(
 );
 
 export default api;
+

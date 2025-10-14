@@ -81,6 +81,10 @@ const AdminDashboard = () => {
             alert("No events posted yet to manage.");
         }
     };
+    const handleSignOut = () => {
+        window.localStorage.clear();
+        window.location.href = "/";
+    };
 
 
     const renderEventPosts = () => {
@@ -108,6 +112,9 @@ const AdminDashboard = () => {
 
     return (
         <div className="admin-dashboard-page">
+            <button className="sout" onClick={handleSignOut}>
+                Sign Out
+            </button>
             <header className="dashboard-header">
                 <h1>Admin Control Center 🌟</h1>
                 <p>Manage University Events and Ticket Inventory.</p>

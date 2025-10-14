@@ -25,4 +25,6 @@ public class Events {
     private int totalSeats;
     private int availableSeats;
     private double price;
+    private String eventImageBase64;
+    private String imageName;
 }

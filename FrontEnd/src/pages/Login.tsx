@@ -60,7 +60,6 @@ const Login = () => {
         return isValid;
     };
 
-    // Handle form submit
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setMessage(null);
@@ -70,20 +69,18 @@ const Login = () => {
         setLoading(true);
 
         try {
-            // Call backend login
             const response: LoginResponse = await loginUser(form);
             const user = response.data;
-
-            // Save tokens
-            localStorage.setItem("accessToken", response.accessToken);
-            localStorage.setItem("refreshToken", response.refreshToken);
 
             localStorage.setItem("role", user.role);
 
             setMessage("✅ Login successful! Redirecting...");
 
-            // Redirect to dashboard after 1 second
-            setTimeout(() => navigate("/user"), 1000);
+            if (user.role === "USER"){
+                setTimeout(() => navigate("/user"), 1000);
+            }else {
+                setTimeout(() => navigate("/admin"), 1000);
+            }
 
         } catch (err: any) {
             setMessage(err.response?.data?.message || "❌ Login failed. Please check your credentials.");

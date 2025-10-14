@@ -20,4 +20,6 @@ public class EventsDTO {
     private int totalSeats;
     private int availableSeats;
     private double price;
+    private String imageBase64;
+    private String imageName;
 }
