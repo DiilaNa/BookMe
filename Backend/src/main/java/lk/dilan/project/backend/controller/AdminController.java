@@ -19,7 +19,6 @@ public class AdminController {
 
     @PostMapping("/saveEvent")
     public ResponseEntity<ApiResponseDto> saveEvent(@RequestBody EventsDTO eventsDTO){
-        System.out.println(eventsDTO);
         eventsService.saveEvent(eventsDTO);
         return ResponseEntity.ok(new ApiResponseDto(
                 200,
