@@ -1,9 +1,8 @@
-// pages/UserEventsPage.tsx
-
 import React, { useState, useEffect } from 'react';
 import FeaturedEventCard from '../components/FeaturedCard.tsx';
 import StandardEventCard from '../components/FeaturedCard.tsx';
 import './Styles/User.scss';
+import {useNavigate} from "react-router-dom";
 
 interface UserEvent {
     id: string;
@@ -19,6 +18,7 @@ interface UserEvent {
 const UserEventsPage: React.FC = () => {
     const [events, setEvents] = useState<UserEvent[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
     // FIX 1: Mocked data for initial UI testing (replace with actual fetch)
     const MOCK_EVENTS: UserEvent[] = [
@@ -47,8 +47,15 @@ const UserEventsPage: React.FC = () => {
     };
 
     useEffect(() => {
+        const role = localStorage.getItem("role");
+
+        if (!role || role !== "USER") {
+            navigate("/");
+            return;
+        }
         fetchEvents();
     }, []);
+
 
     const handleBuyNow = (eventId: string, title: string) => {
         alert(`Redirecting to purchase page for event ID: ${eventId} (${title})`);

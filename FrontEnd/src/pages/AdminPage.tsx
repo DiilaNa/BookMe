@@ -5,6 +5,7 @@ import "./Styles/Admin.scss";
 import ActionCard from "../components/Card.tsx";
 import ReportModal from "../pages/Modals/Report.tsx"
 import EditEventModel from "./Modals/EditEventModel.tsx";
+import {useNavigate} from "react-router-dom";
 
 interface EventPost {
     id: string;
@@ -26,6 +27,7 @@ const AdminDashboard = () => {
     const [selectedEvent, setSelectedEvent] = useState<EventPost | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false); // NEW: State for Edit modal
     const [eventToEdit, setEventToEdit] = useState<EventPost | null>(null); // NEW: State for event being edited
+    const navigate = useNavigate();
 
 
     const fetchEvents = async () => {
@@ -44,7 +46,16 @@ const AdminDashboard = () => {
         }
     };
 
-    useEffect(() => {fetchEvents();}, []);
+    useEffect(() => {
+        const admin = localStorage.getItem("role");
+
+        if ( !admin || admin  !== "ADMIN") {
+            navigate("/");
+            return;
+        }
+
+        fetchEvents();
+    }, []);
 
     const handleEventPosted = (title: string) => {
         setIsModalOpen(false);

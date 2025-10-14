@@ -19,7 +19,7 @@ interface LoginForm {
 interface LoginResponse {
     accessToken: string;
     refreshToken: string;
-    user?: {
+    data: {
         id: string;
         username: string;
         role: string;
@@ -72,15 +72,13 @@ const Login = () => {
         try {
             // Call backend login
             const response: LoginResponse = await loginUser(form);
+            const user = response.data;
 
             // Save tokens
             localStorage.setItem("accessToken", response.accessToken);
             localStorage.setItem("refreshToken", response.refreshToken);
 
-            // Optionally store user info
-            if (response.user) {
-                localStorage.setItem("user", JSON.stringify(response.user));
-            }
+            localStorage.setItem("role", user.role);
 
             setMessage("✅ Login successful! Redirecting...");
 
