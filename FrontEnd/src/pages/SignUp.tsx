@@ -76,7 +76,6 @@ const SignUp = () => {
         setLoading(true);
 
         try {
-            console.log(form + "this is inside try catch")
             await signUpUser(form);
             setMessage("✅ Account created successfully!");
             setForm({ username: "", email: "", password: "", phone: "" });
@@ -150,7 +149,7 @@ const SignUp = () => {
                         {loading ? "Creating..." : "Sign Up"}
                     </button>
                     <p className="login-link-container">
-                        Already have an account? <Link to="/login">Click here to log in</Link>
+                        Already have an account? <Link to="/">Click here to log in</Link>
                     </p>
                 </form>
             </div>

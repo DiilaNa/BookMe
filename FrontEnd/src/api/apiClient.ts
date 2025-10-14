@@ -1,15 +1,19 @@
-// src/api/apiClient.ts
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:8080", // your backend base URL
+    baseURL: "http://localhost:8080",
     headers: { "Content-Type": "application/json" },
 });
 
-// Automatically attach access token to every request
+// Attach token only if request is not public
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("accessToken");
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+    const publicEndpoints = ["/auth/login", "/auth/register", "/auth/refresh-token"];
+
+    if (!publicEndpoints.includes(config.url || "")) {
+        const token = localStorage.getItem("accessToken");
+        if (token) config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
 });
 

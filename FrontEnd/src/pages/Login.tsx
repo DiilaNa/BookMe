@@ -1,42 +1,55 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { Link } from "react-router-dom";
-import "./Styles/Login.scss"; // 👈 Use the same styling structure
+import { Link, useNavigate } from "react-router-dom";
+import "./Styles/Login.scss";
 import FormInput from "../components/FormInput.tsx";
+import { loginUser } from "../api/authService.ts";
 
-/*
-import { loginUser } from "../../services/api"; // Placeholder for API function
-*/
-
-
+// Validation pattern
 const validationPatterns = {
     password: new RegExp(".{8,}"), // At least 8 characters
 };
 
+// Form types
 interface LoginForm {
-    name: string;
+    username: string;
     password: string;
 }
 
+interface LoginResponse {
+    accessToken: string;
+    refreshToken: string;
+    user?: {
+        id: string;
+        username: string;
+        role: string;
+        status?: string;
+    };
+}
+
 const Login = () => {
-    const [form, setForm] = useState<LoginForm>({ name: "", password: "" });
+    const navigate = useNavigate();
+    const [form, setForm] = useState<LoginForm>({ username: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
-
+    // Handle input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
-
-        // Clear validation error as the user types
         setValidationErrors(prev => ({ ...prev, [name]: "" }));
     };
 
-
+    // Form validation
     const validateForm = () => {
         const errors: Record<string, string> = {};
         let isValid = true;
+
+        if (!form.username.trim()) {
+            errors.username = "Username is required.";
+            isValid = false;
+        }
 
         if (!validationPatterns.password.test(form.password)) {
             errors.password = "Password must be at least 8 characters.";
@@ -47,25 +60,35 @@ const Login = () => {
         return isValid;
     };
 
-
+    // Handle form submit
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setMessage(null);
 
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         setLoading(true);
 
         try {
+            // Call backend login
+            const response: LoginResponse = await loginUser(form);
+
+            // Save tokens
+            localStorage.setItem("accessToken", response.accessToken);
+            localStorage.setItem("refreshToken", response.refreshToken);
+
+            // Optionally store user info
+            if (response.user) {
+                localStorage.setItem("user", JSON.stringify(response.user));
+            }
+
             setMessage("✅ Login successful! Redirecting...");
 
-            // In a real app, you'd handle setting auth tokens and redirecting here
-            // setTimeout(() => window.location.href = "/dashboard", 1000);
+            // Redirect to dashboard after 1 second
+            setTimeout(() => navigate("/user"), 1000);
 
         } catch (err: any) {
-            setMessage(`❌ Login failed. Please check your credentials.`);
+            setMessage(err.response?.data?.message || "❌ Login failed. Please check your credentials.");
         } finally {
             setLoading(false);
         }
@@ -81,13 +104,13 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit}>
                     <FormInput
-                        label="User Name"
+                        label="Username"
                         type="text"
-                        name="name"
-                        value={form.name}
+                        name="username"
+                        value={form.username}
                         onChange={handleChange}
                         required
-                        errorMessage={validationErrors.name}
+                        errorMessage={validationErrors.username}
                     />
 
                     <FormInput
