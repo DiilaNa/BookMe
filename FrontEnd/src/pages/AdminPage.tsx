@@ -6,17 +6,8 @@ import ActionCard from "../components/Card.tsx";
 import ReportModal from "../pages/Modals/Report.tsx"
 import EditEventModel from "./Modals/EditEventModel.tsx";
 import {useNavigate} from "react-router-dom";
-
-interface EventPost {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    location: string;
-    totalSeats: number;
-    price: number;
-    imageBase64: string | null;
-}
+import type {EventPost} from "../types/Events.ts";
+import {getAdminEvents} from "../api/authService.ts";
 
 
 const AdminDashboard = () => {
@@ -33,12 +24,16 @@ const AdminDashboard = () => {
     const fetchEvents = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('/api/events');
-            if (!response.ok) {
-                throw new Error('Failed to fetch events');
+            const userId = localStorage.getItem('userId')
+
+            if (!userId) {
+                console.error("User ID not found in localStorage. Cannot fetch events.");
+                navigate("/");
+                return;
             }
-            const data: EventPost[] = await response.json();
+            const data = await getAdminEvents(userId);
             setEvents(data);
+
         } catch (error) {
             console.error("Error fetching events:", error);
         } finally {

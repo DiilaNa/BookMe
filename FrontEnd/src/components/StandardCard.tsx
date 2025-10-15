@@ -1,5 +1,3 @@
-// components/StandardEventCard.tsx
-
 import React from 'react';
 
 interface UserEvent {

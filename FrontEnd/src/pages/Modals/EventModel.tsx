@@ -8,6 +8,7 @@ import type {EventForm} from "../../types/Events.ts";
 
 const initialFormState: EventForm = {
     title: "",
+    userId:"",
     description: "",
     date: "",
     location: "",

@@ -31,8 +31,9 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<EventsDTO> getAllMyEvents(String userId) {
-         List<Events> events = eventsRepository.getAllByUserID(userId);
+    public List<EventsDTO> getAllMyEvents(String userID) {
+         List<Events> events = eventsRepository.getAllByUserID(userID);
+        System.out.println(events.size());
         return modelMapper.map(events,new TypeToken<List<EventsDTO>>(){}.getType());
     }
 

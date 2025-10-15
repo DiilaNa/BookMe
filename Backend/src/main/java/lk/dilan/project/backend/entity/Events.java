@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Document(collection = "events")
@@ -20,7 +21,7 @@ public class Events {
     private String userID;/*FK from user table*/
     private String title;
     private String description;
-    private LocalDateTime date;
+    private LocalDate date;
     private String location;
     private int totalSeats;
     private int availableSeats;

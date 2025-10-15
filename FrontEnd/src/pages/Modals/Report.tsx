@@ -15,7 +15,8 @@ interface EventReport {
     location: string;
     totalSeats: number;
     price: number;
-    imageBase64: string | null;
+    eventImageBase64: string | null;
+    eventImageFileName: string | null;
 }
 
 interface ReportModalProps {
@@ -36,7 +37,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, event }) => 
         return null;
     }
 
-    const imageSrc = event.imageBase64 || '/placeholder-event-image.svg';
+    const imageSrc = event.eventImageBase64 || '/placeholder-event-image.svg';
     const totalRevenue = DUMMY_BUYERS.reduce((sum, user) => sum + user.ticketsPurchased, 0) * event.price;
     const ticketsSold = DUMMY_BUYERS.reduce((sum, user) => sum + user.ticketsPurchased, 0);
 

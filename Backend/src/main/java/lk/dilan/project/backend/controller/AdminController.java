@@ -26,6 +26,15 @@ public class AdminController {
                 "Event's post Saved"
         ));
     }
+    @GetMapping("/getMyEvents/{userId}")
+    public ResponseEntity<ApiResponseDto> getMyEvents(@PathVariable("userId") String userID){
+        List<EventsDTO> eventsDTOS = eventsService.getAllMyEvents(userID);
+        return ResponseEntity.ok(new ApiResponseDto(
+                200,
+                "ok",
+                eventsDTOS
+        ));
+    }
 
     @PostMapping("/updateEvent")
     public ResponseEntity<ApiResponseDto> updateEvent(@RequestBody EventsDTO eventsDTO){
@@ -37,15 +46,7 @@ public class AdminController {
         ));
     }
 
-    @GetMapping("/getMyEvents/{userId}")
-    public ResponseEntity<ApiResponseDto> getMyEvents(@PathVariable String userId){
-        List<EventsDTO> eventsDTOS = eventsService.getAllMyEvents(userId);
-        return ResponseEntity.ok(new ApiResponseDto(
-                200,
-                "ok",
-                eventsDTOS
-        ));
-    }
+
 
     @GetMapping("/search")
     public List<EventsDTO> searchEvents(

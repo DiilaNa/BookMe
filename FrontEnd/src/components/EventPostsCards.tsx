@@ -1,23 +1,16 @@
 import React from 'react';
 import "./Styles/EventPostCards.scss"
+import type {EventPost} from "../types/Events.ts";
 
-interface EventPost {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    location: string;
-    totalSeats: number;
-    price: number;
-    imageBase64: string | null;
-}
 
 interface EventPostCardProps {
     event: EventPost;
 }
 
 const EventPostCard: React.FC<EventPostCardProps> = ({ event }) => {
-    const imageSrc = event.imageBase64 || '/placeholder-event-image.svg';
+    const imageToDisplay = event.eventImageBase64
+        ? `data:image/jpeg;base64,${event.eventImageBase64}`
+        : '/placeholder-event-image.svg';
 
     const formattedDate = new Date(event.date).toLocaleDateString(undefined, {
         month: 'short',
@@ -27,8 +20,13 @@ const EventPostCard: React.FC<EventPostCardProps> = ({ event }) => {
 
     return (
         <div className="action-card event-post-card">
-            <div className="event-image-container">
-                <img src={imageSrc} alt={event.title} className="event-image" />
+
+            <div className="card-image-wrapper">
+                <img
+                    src={imageToDisplay}
+                    alt={`Poster for ${event.title}`}
+                    className="event-poster-image"
+                />
             </div>
 
             <div className="card-content">
@@ -36,7 +34,11 @@ const EventPostCard: React.FC<EventPostCardProps> = ({ event }) => {
                 <p className="event-details">
                     📅 {formattedDate} at {event.location}
                 </p>
-                <p className="event-description">{event.description.substring(0, 100)}...</p>
+                <p className="event-description">
+                    {event.description.length > 100
+                        ? `${event.description.substring(0, 100)}...`
+                        : event.description}
+                </p>
 
                 <div className="event-stats">
                     <span className="stat-item">🎫 Seats: {event.totalSeats}</span>

@@ -25,7 +25,8 @@ interface EventData {
     location: string;
     totalSeats: number;
     price: number;
-    imageBase64: string | null;
+    eventImageBase64: string | null;
+    eventImageFileName: string | null;
 }
 
 interface EventEditModalProps {
@@ -64,8 +65,8 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
                 totalSeats: eventToEdit.totalSeats,
                 price: eventToEdit.price,
                 // Load existing image data and set a placeholder file name
-                eventImageBase64: eventToEdit.imageBase64,
-                eventImageFileName: eventToEdit.imageBase64 ? "Existing Image Loaded" : null,
+                eventImageBase64: eventToEdit.eventImageBase64,
+                eventImageFileName: eventToEdit.eventImageFileName ? "Existing Image Loaded" : null,
             });
             setValidationErrors({}); // Clear errors when loading new data
         }

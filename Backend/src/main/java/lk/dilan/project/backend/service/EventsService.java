@@ -9,7 +9,7 @@ import java.util.List;
 public interface EventsService {
     void saveEvent(EventsDTO eventsDTO);
 
-    List<EventsDTO> getAllMyEvents(String userId);
+    List<EventsDTO> getAllMyEvents(String userID);
 
     void updateEvent(EventsDTO eventsDTO);
 
