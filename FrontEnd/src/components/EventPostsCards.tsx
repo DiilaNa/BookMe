@@ -8,10 +8,6 @@ interface EventPostCardProps {
 }
 
 const EventPostCard: React.FC<EventPostCardProps> = ({ event }) => {
-    const imageToDisplay = event.eventImageBase64
-        ? `data:image/jpeg;base64,${event.eventImageBase64}`
-        : '/placeholder-event-image.svg';
-
     const formattedDate = new Date(event.date).toLocaleDateString(undefined, {
         month: 'short',
         day: 'numeric',
@@ -23,10 +19,11 @@ const EventPostCard: React.FC<EventPostCardProps> = ({ event }) => {
 
             <div className="card-image-wrapper">
                 <img
-                    src={imageToDisplay}
-                    alt={`Poster for ${event.title}`}
                     className="event-poster-image"
+                    src={event.eventImageBase64 || "/default-placeholder.jpg"}
+                    alt={event.title}
                 />
+
             </div>
 
             <div className="card-content">

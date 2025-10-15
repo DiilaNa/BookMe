@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,11 +22,12 @@ public class Events {
     private String userID;/*FK from user table*/
     private String title;
     private String description;
-    private LocalDate date;
+    private LocalDateTime date;
     private String location;
     private int totalSeats;
     private int availableSeats;
     private double price;
-    private String eventImageBase64;
+    @Field("image")
+    private byte[] image;
     private String imageName;
 }

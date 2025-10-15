@@ -10,8 +10,11 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +26,14 @@ public class EventsServiceImpl implements EventsService {
     private final ModelMapper modelMapper;
     @Override
     @Transactional
-    public void saveEvent(EventsDTO eventsDTO) {
+    public void saveEvent(EventsDTO eventsDTO, MultipartFile file) throws IOException {
         Events events = modelMapper.map(eventsDTO, Events.class);
+
+        try {
+            events.setImage(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read image file", e);
+        }
         eventsRepository.save(events);
 
     }
@@ -32,9 +41,19 @@ public class EventsServiceImpl implements EventsService {
     @Override
     @Transactional(readOnly = true)
     public List<EventsDTO> getAllMyEvents(String userID) {
-         List<Events> events = eventsRepository.getAllByUserID(userID);
-        System.out.println(events.size());
-        return modelMapper.map(events,new TypeToken<List<EventsDTO>>(){}.getType());
+        List<Events> events = eventsRepository.getAllByUserID(userID);
+
+        return events.stream().map(event -> {
+            EventsDTO dto = modelMapper.map(event, EventsDTO.class);
+
+            if (event.getImage() != null && event.getImage().length > 0) {
+                String base64 = Base64.getEncoder().encodeToString(event.getImage());
+                // add the data URL prefix
+                dto.setEventImageBase64("data:image/jpeg;base64," + base64);
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override

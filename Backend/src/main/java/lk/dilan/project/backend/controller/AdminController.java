@@ -5,9 +5,12 @@ import lk.dilan.project.backend.dto.login.ApiResponseDto;
 import lk.dilan.project.backend.service.EventsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,9 +20,10 @@ import java.util.List;
 public class AdminController {
     private final EventsService eventsService;
 
-    @PostMapping("/saveEvent")
-    public ResponseEntity<ApiResponseDto> saveEvent(@RequestBody EventsDTO eventsDTO){
-        eventsService.saveEvent(eventsDTO);
+    @PostMapping(value = "/saveEvent", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponseDto> saveEvent(@RequestPart("event") EventsDTO eventsDTO, @RequestPart("file") MultipartFile file) throws IOException {
+        eventsService.saveEvent(eventsDTO,file);
+
         return ResponseEntity.ok(new ApiResponseDto(
                 200,
                 "ok",

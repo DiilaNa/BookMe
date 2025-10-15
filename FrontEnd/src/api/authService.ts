@@ -26,26 +26,34 @@ export const loginUser = async ( LoginForm:{
 };
 
 
-
 export const postNewEvent = async (eventData: EventForm) => {
-    const userId = localStorage.getItem('userId');
+    const userID = localStorage.getItem('userId');
+    if (!userID) throw new Error("User ID not found. Cannot post event.");
 
-    console.log(userId+" in auth service")
+    const formData = new FormData();
 
-    if (!userId) {
-        throw new Error("User ID not found. Cannot post event.");
-    }
-    const cleanedData = {
+    // Append the event object as JSON string
+    formData.append("event", new Blob([JSON.stringify({
         ...eventData,
+        userID,
         totalSeats: Number(eventData.totalSeats),
-        price: Number(eventData.price),
-        userID:userId
-    };
+        price: Number(eventData.price)
+    })], { type: "application/json" }));
 
-    const response = await api.post("/admin/saveEvent", cleanedData);
+    // Append the image file (if available)
+    if (eventData.eventImageBase64) {
+        const response = await fetch(eventData.eventImageBase64);
+        const blob = await response.blob();
+        formData.append("file", blob, eventData.eventImageFileName || "image.jpg");
+    }
+
+    const response = await api.post("/admin/saveEvent", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
 
     return response.data;
 };
+
 
 export const getAdminEvents = async (userId: string): Promise<EventPost[]> => {
     try {

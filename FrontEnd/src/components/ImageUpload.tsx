@@ -22,7 +22,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
                 {required && <span style={{ color: 'red', marginLeft: '5px' }}>*</span>}
             </label>
             <input
-                id="eventImage"
+                id="event-image-upload"
                 type="file"
                 name="eventImage"
                 accept="image/*"

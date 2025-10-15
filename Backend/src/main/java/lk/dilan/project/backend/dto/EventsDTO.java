@@ -17,7 +17,7 @@ public class EventsDTO {
     private String userID;/*FK from user table*/
     private String title;
     private String description;
-    private LocalDate date;
+    private LocalDateTime date;
     private String location;
     private int totalSeats;
     private int availableSeats;
