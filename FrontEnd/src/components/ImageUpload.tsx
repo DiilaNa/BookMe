@@ -7,6 +7,7 @@ interface ImageUploadInputProps {
     fileName: string | null;
     errorMessage: string | undefined;
     required?: boolean;
+    imagePreviewBase64: string | null;
 }
 
 const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
@@ -14,6 +15,8 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
                                                                fileName,
                                                                errorMessage,
                                                                required = false,
+                                                               imagePreviewBase64
+
                                                            }) => {
     return (
         <div className="form-group image-upload-group">
@@ -30,7 +33,14 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
                 required={required}
                 className={errorMessage ? 'input-error' : ''}
             />
-            {fileName && (
+            {imagePreviewBase64 && (
+                <div className="image-preview-container">
+                    <p>Current Image:</p>
+                    <img src={imagePreviewBase64} alt="Current Event Poster" className="current-poster-preview"/>
+                    {fileName && <p className="file-preview">File: {fileName}</p>}
+                </div>
+            )}
+            {!imagePreviewBase64 && fileName && (
                 <p className="file-preview">Selected: {fileName}</p>
             )}
             {errorMessage && <span className="error-message">{errorMessage}</span>}

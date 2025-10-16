@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import type { FormEvent } from "react";
 import FormInput from "../../components/FormInput.tsx";
 import "../Styles/EventModel.scss";
@@ -223,6 +223,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
                                 fileName={form.eventImageFileName}
                                 errorMessage={validationErrors.image}
                                  required={true}
+                                imagePreviewBase64={form.eventImageBase64}
                             />
 
                         </div>

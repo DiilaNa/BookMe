@@ -68,9 +68,14 @@ public class EventsServiceImpl implements EventsService {
         existingEvent.setTotalSeats(eventsDTO.getTotalSeats());
         existingEvent.setPrice(eventsDTO.getPrice());
 
+        if (eventsDTO.getEventImageBase64() != null) {
+            existingEvent.setImage(Base64.getDecoder().decode(eventsDTO.getEventImageBase64()));
+            existingEvent.setImageName(eventsDTO.getImageName());
+        }
+
+        System.out.println("HI");
 
         eventsRepository.save(existingEvent);
-
     }
 
     @Override

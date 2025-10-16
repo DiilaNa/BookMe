@@ -1,7 +1,9 @@
+import  { updateEvent } from "../../api/authService.ts"; // adjust path as needed
 import React, { useState, useMemo, useEffect } from "react";
 import type { FormEvent } from "react";
 import FormInput from "../../components/FormInput.tsx";
 import ImageUpload from "../../components/ImageUpload.tsx";
+
 import "../Styles/EventModel.scss";
 
 interface EventForm {
@@ -15,12 +17,10 @@ interface EventForm {
     eventImageFileName: string | null;
 }
 
-// Interface matching the data fetched from the DB (with ID)
 interface EventData {
     id: string;
     title: string;
     description: string;
-    // Date must be converted to datetime-local format (YYYY-MM-DDTHH:MM)
     date: string;
     location: string;
     totalSeats: number;
@@ -32,13 +32,10 @@ interface EventData {
 interface EventEditModalProps {
     isOpen: boolean;
     onClose: () => void;
-    // Pass the event data that needs to be edited
     eventToEdit: EventData | null;
     onSuccess: (title: string) => void;
 }
-
 const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventToEdit, onSuccess }) => {
-    // FIX 1: Initial state is derived from eventToEdit whenever it changes
     const [form, setForm] = useState<EventForm>({
         title: "", description: "", date: "", location: "", totalSeats: 0, price: 0.00,
         eventImageBase64: null, eventImageFileName: null,
@@ -46,10 +43,8 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
-    // FIX 2: Load existing data when the modal opens or eventToEdit changes
     useEffect(() => {
         if (eventToEdit) {
-            // Helper function to format ISO date string for datetime-local input
             const formatForInput = (isoDate: string) => {
                 const date = new Date(isoDate);
                 date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
@@ -59,19 +54,16 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
             setForm({
                 title: eventToEdit.title,
                 description: eventToEdit.description,
-                // Ensure date is formatted correctly for input[type="datetime-local"]
                 date: formatForInput(eventToEdit.date),
                 location: eventToEdit.location,
                 totalSeats: eventToEdit.totalSeats,
                 price: eventToEdit.price,
-                // Load existing image data and set a placeholder file name
                 eventImageBase64: eventToEdit.eventImageBase64,
-                eventImageFileName: eventToEdit.eventImageFileName ? "Existing Image Loaded" : null,
+                eventImageFileName: eventToEdit.eventImageFileName
             });
-            setValidationErrors({}); // Clear errors when loading new data
+            setValidationErrors({});
         }
     }, [eventToEdit]);
-
 
     const minDate = useMemo(() => {
         const now = new Date();
@@ -83,9 +75,8 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
         return null;
     }
 
-    // Reuse handleChange and handleFileChange logic from EventFormModal
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // ... (standard handleChange logic remains the same) ...
         const { name, value, type } = e.target;
         const newValue = (type === 'number' || name === 'totalSeats' || name === 'price')
             ? parseFloat(value) || 0
@@ -95,7 +86,6 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // ... (handleFileChange logic remains the same, converting to Base64) ...
         const file = e.target.files ? e.target.files[0] : null;
 
         if (file) {
@@ -116,61 +106,37 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
             };
             reader.readAsDataURL(file);
         } else {
-            // Allows user to clear the image by clicking cancel on file selection
-            setForm(prev => ({ ...prev, eventImageBase64: null, eventImageFileName: null }));
+             setForm(prev => ({ ...prev, eventImageBase64: null, eventImageFileName: null }));
         }
     };
 
+
     const validateForm = () => {
-        // ... (standard validateForm logic remains the same) ...
         const errors: Record<string, string> = {};
         let isValid = true;
-        // ... (all validation checks) ...
         if (validationErrors.image) isValid = false;
         setValidationErrors(errors);
         return isValid;
     };
 
-
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm() || !eventToEdit) return;
 
         setLoading(true);
 
-        const payload = {
-            title: form.title,
-            description: form.description,
-            date: form.date,
-            location: form.location,
-            totalSeats: form.totalSeats,
-            price: form.price,
-            imageBase64: form.eventImageBase64,
-        };
-
         try {
-            // FIX 3: Use PUT method for updating existing event
-            const response = await fetch(`/api/events/${eventToEdit.id}`, {
-                method: 'PUT', // or PATCH, depending on your Spring Boot config
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to update event.");
-            }
-
+            await updateEvent(eventToEdit.id, form);
             onSuccess(form.title);
-
         } catch (err) {
-            setValidationErrors({ api: "Failed to update event. Check server status." });
+            console.error("Error updating event:", err);
+            setValidationErrors({ api: "Failed to update event. Please try again." });
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -265,6 +231,7 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
                                 onFileChange={handleFileChange}
                                 fileName={form.eventImageFileName}
                                 errorMessage={validationErrors.image}
+                                imagePreviewBase64={form.eventImageBase64}
                             />
                         </div>
 

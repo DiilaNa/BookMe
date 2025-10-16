@@ -32,7 +32,6 @@ export const postNewEvent = async (eventData: EventForm) => {
 
     const formData = new FormData();
 
-    // Append the event object as JSON string
     formData.append("event", new Blob([JSON.stringify({
         ...eventData,
         userID,
@@ -65,4 +64,48 @@ export const getAdminEvents = async (userId: string): Promise<EventPost[]> => {
         console.error("Error fetching admin events:", error);
         throw new Error("Failed to fetch events from server.");
     }
+};
+
+
+export interface EventFormUpdate {
+    title: string;
+    description: string;
+    date: string;
+    location: string;
+    totalSeats: number;
+    price: number;
+    eventImageBase64: string | null;
+    eventImageFileName: string | null;
+}
+export const updateEvent = async (id: string, eventData: EventFormUpdate) => {
+    const userID = localStorage.getItem('userId');
+    console.log(userID + "inside update event")
+    if (!userID) throw new Error("User ID not found. Cannot update event.");
+
+    const formData = new FormData();
+
+    formData.append("event",
+        new Blob(
+            [JSON.stringify({
+                ...eventData,
+                date: new Date(eventData.date).toISOString(),
+                userID,
+                totalSeats: Number(eventData.totalSeats),
+                price: Number(eventData.price),
+            })],
+            { type: "application/json" }
+        )
+    );
+
+    if (eventData.eventImageBase64) {
+        const response = await fetch(eventData.eventImageBase64);
+        const blob = await response.blob();
+        formData.append("file", blob, eventData.eventImageFileName || "image.jpg");
+    }
+
+    const response = await api.put(`/admin/updateEvent/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return response.data;
 };

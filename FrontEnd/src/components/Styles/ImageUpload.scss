@@ -6,10 +6,37 @@ $text-color: #333;
     // Style for the text showing the selected file name
     font-size: 0.6rem;
     color: $primary-color;
-    margin-top: 0.6rem;
+    margin-top: 0.4rem;
     font-weight: 500;
     border-bottom: 1px dotted rgba($primary-color, 0.5);
     padding-bottom: 1px;
+  }
+  // ImageUpload.scss (Recommended additions)
+
+  .image-preview-container {
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fafafa;
+
+    p {
+      margin-bottom: 3px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: $text-color;
+    }
+  }
+
+  .current-poster-preview {
+    // Enforce size constraints to prevent massive rendering size
+    max-width: 100%;
+    max-height: 200px; /* Limit height for better modal appearance */
+    display: block;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
   }
 
   input[type="file"] {
