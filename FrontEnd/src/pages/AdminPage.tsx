@@ -68,7 +68,12 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleEditEvent = () => {
+    const handleEditEvent = (event: EventPost) => {
+        setEventToEdit(event);
+        setIsEditModalOpen(true);
+    };
+
+    const handleEditSeats = () => {
         if (events.length > 0){
             setEventToEdit(events[0]);
             setIsEditModalOpen(true);
@@ -99,7 +104,7 @@ const AdminDashboard = () => {
         return (
             <div className="posts-grid">
                 {events.map(event => (
-                    <EventPostCard key={event.id} event={event} />
+                    <EventPostCard key={event.id} event={event}  onEditClick={handleEditEvent} />
                 ))}
             </div>
         );
@@ -138,7 +143,7 @@ const AdminDashboard = () => {
                     title="Manage Inventory"
                     description="Adjust available seats and ticket prices for existing events."
                     buttonContent="Edit Events"
-                    onButtonClick={handleEditEvent}
+                    onButtonClick={handleEditSeats}
                 />
 
                 <div className="event-posts-list">

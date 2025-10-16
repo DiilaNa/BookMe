@@ -5,9 +5,10 @@ import type {EventPost} from "../types/Events.ts";
 
 interface EventPostCardProps {
     event: EventPost;
+    onEditClick: (event: EventPost) => void;
 }
 
-const EventPostCard: React.FC<EventPostCardProps> = ({ event }) => {
+const EventPostCard: React.FC<EventPostCardProps> = ({ event , onEditClick }) => {
     const formattedDate = new Date(event.date).toLocaleDateString(undefined, {
         month: 'short',
         day: 'numeric',
@@ -43,9 +44,10 @@ const EventPostCard: React.FC<EventPostCardProps> = ({ event }) => {
                 </div>
             </div>
 
-            <button className="action-button secondary">
+            <button className="action-button secondary" onClick={() => onEditClick(event)}>
                 View/Edit Post
             </button>
+
         </div>
     );
 };
