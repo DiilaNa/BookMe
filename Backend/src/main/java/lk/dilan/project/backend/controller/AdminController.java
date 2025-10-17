@@ -1,5 +1,6 @@
 package lk.dilan.project.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.dilan.project.backend.dto.EventsDTO;
 import lk.dilan.project.backend.dto.login.ApiResponseDto;
 import lk.dilan.project.backend.service.EventsService;
@@ -34,6 +35,18 @@ public class AdminController {
                 "Event's post Saved"
         ));
     }
+    @PutMapping(value = "/updateEvent", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponseDto> updateEvent(@RequestPart("event") EventsDTO eventsDTO, @RequestPart( "file")MultipartFile file) throws IOException {
+        eventsService.updateEvent(eventsDTO,file);
+       return ResponseEntity.ok(new ApiResponseDto(
+               200,
+               "ok",
+               "Updated Successfully"
+       ));
+    }
+
+
+
     @GetMapping("/getMyEvents/{userId}")
     public ResponseEntity<ApiResponseDto> getMyEvents(@PathVariable("userId") String userID){
         List<EventsDTO> eventsDTOS = eventsService.getAllMyEvents(userID);
@@ -44,23 +57,7 @@ public class AdminController {
         ));
     }
 
-    @PutMapping("/updateEvent/{id}")
-    public ResponseEntity<String> updateEvent(@PathVariable String id, @RequestPart("event") EventsDTO eventsDTO, @RequestPart(value = "file", required = false) MultipartFile file) {
-        try {
-            if (file != null && !file.isEmpty()) {
-               log.info("file is empty");
-                eventsDTO.setEventImageBase64(Base64.getEncoder().encodeToString(file.getBytes()));
-                eventsDTO.setImageName(file.getOriginalFilename());
-            }
-            log.info("update event");
-            eventsDTO.setId(id);
-            eventsService.updateEvent(eventsDTO);
-            return ResponseEntity.ok("Event updated successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error updating event: " + e.getMessage());
-        }
-    }
+
 
     @GetMapping("/search")
     public List<EventsDTO> searchEvents(

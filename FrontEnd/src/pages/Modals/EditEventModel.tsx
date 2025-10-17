@@ -7,6 +7,8 @@ import ImageUpload from "../../components/ImageUpload.tsx";
 import "../Styles/EventModel.scss";
 
 interface EventForm {
+    id: string;
+    userID: string;
     title: string;
     description: string;
     date: string;
@@ -37,8 +39,9 @@ interface EventEditModalProps {
 }
 const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventToEdit, onSuccess }) => {
     const [form, setForm] = useState<EventForm>({
+        id: "", userID: "",
         title: "", description: "", date: "", location: "", totalSeats: 0, price: 0.00,
-        eventImageBase64: null, eventImageFileName: null,
+        eventImageBase64: null, eventImageFileName: null
     });
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -52,6 +55,8 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
             };
 
             setForm({
+                id:  eventToEdit.id,
+                userID: localStorage.getItem("userId") || "",
                 title: eventToEdit.title,
                 description: eventToEdit.description,
                 date: formatForInput(eventToEdit.date),
@@ -127,7 +132,7 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
         setLoading(true);
 
         try {
-            await updateEvent(eventToEdit.id, form);
+            await updateEvent(form);
             onSuccess(form.title);
         } catch (err) {
             console.error("Error updating event:", err);

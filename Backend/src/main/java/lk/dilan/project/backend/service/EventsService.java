@@ -13,7 +13,7 @@ public interface EventsService {
 
     List<EventsDTO> getAllMyEvents(String userID);
 
-    void updateEvent(EventsDTO eventsDTO);
+    void updateEvent(EventsDTO eventsDTO,MultipartFile file) throws IOException;
 
     List<EventsDTO> searchEvents(String keyword, String location, LocalDateTime startDate, LocalDateTime endDate);
 

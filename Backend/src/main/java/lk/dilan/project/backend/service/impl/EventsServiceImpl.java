@@ -6,6 +6,8 @@ import lk.dilan.project.backend.repository.EventsRepository;
 import lk.dilan.project.backend.repository.UserRepository;
 import lk.dilan.project.backend.service.EventsService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class EventsServiceImpl implements EventsService {
+    private static final Log log = LogFactory.getLog(EventsServiceImpl.class);
     private final EventsRepository eventsRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     @Override
     @Transactional
-    public void saveEvent(EventsDTO eventsDTO, MultipartFile file) throws IOException {
+    public void saveEvent(EventsDTO eventsDTO, MultipartFile file) {
         Events events = modelMapper.map(eventsDTO, Events.class);
 
         try {
@@ -36,6 +39,28 @@ public class EventsServiceImpl implements EventsService {
         }
         eventsRepository.save(events);
 
+    }
+    @Override
+    public void updateEvent(EventsDTO eventsDTO,MultipartFile file){
+        Events existingEvent = eventsRepository.findById(eventsDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        existingEvent.setTitle(eventsDTO.getTitle());
+        existingEvent.setDescription(eventsDTO.getDescription());
+        existingEvent.setDate(eventsDTO.getDate());
+        existingEvent.setLocation(eventsDTO.getLocation());
+        existingEvent.setTotalSeats(eventsDTO.getTotalSeats());
+        existingEvent.setPrice(eventsDTO.getPrice());
+
+        try{
+            existingEvent.setImage(file.getBytes());
+        }catch (IOException e){
+            throw new RuntimeException("Failed to read image file", e);
+        }
+        existingEvent.setImageName(eventsDTO.getImageName());
+
+        log.info("Event updated");
+        eventsRepository.save(existingEvent);
     }
 
     @Override
@@ -56,27 +81,7 @@ public class EventsServiceImpl implements EventsService {
         }).collect(Collectors.toList());
     }
 
-    @Override
-    public void updateEvent(EventsDTO eventsDTO) {
-        Events existingEvent = eventsRepository.findById(eventsDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        existingEvent.setTitle(eventsDTO.getTitle());
-        existingEvent.setDescription(eventsDTO.getDescription());
-        existingEvent.setDate(eventsDTO.getDate());
-        existingEvent.setLocation(eventsDTO.getLocation());
-        existingEvent.setTotalSeats(eventsDTO.getTotalSeats());
-        existingEvent.setPrice(eventsDTO.getPrice());
-
-        if (eventsDTO.getEventImageBase64() != null) {
-            existingEvent.setImage(Base64.getDecoder().decode(eventsDTO.getEventImageBase64()));
-            existingEvent.setImageName(eventsDTO.getImageName());
-        }
-
-        System.out.println("HI");
-
-        eventsRepository.save(existingEvent);
-    }
 
     @Override
     public List<EventsDTO> searchEvents(String keyword, String location, LocalDateTime startDate, LocalDateTime endDate) {

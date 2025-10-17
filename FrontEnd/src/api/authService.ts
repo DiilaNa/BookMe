@@ -77,7 +77,7 @@ export interface EventFormUpdate {
     eventImageBase64: string | null;
     eventImageFileName: string | null;
 }
-export const updateEvent = async (id: string, eventData: EventFormUpdate) => {
+export const updateEvent = async (eventData: EventFormUpdate) => {
     const userID = localStorage.getItem('userId');
     console.log(userID + "inside update event")
     if (!userID) throw new Error("User ID not found. Cannot update event.");
@@ -103,7 +103,7 @@ export const updateEvent = async (id: string, eventData: EventFormUpdate) => {
         formData.append("file", blob, eventData.eventImageFileName || "image.jpg");
     }
 
-    const response = await api.put(`/admin/updateEvent/${id}`, formData, {
+    const response = await api.put(`/admin/updateEvent`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
     });
 
