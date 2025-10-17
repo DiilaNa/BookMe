@@ -37,7 +37,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, event }) => 
         return null;
     }
 
-    const imageSrc = event.eventImageBase64 || '/placeholder-event-image.svg';
+   /* const imageSrc = event.eventImageBase64 || '/placeholder-event-image.svg';*/
     const totalRevenue = DUMMY_BUYERS.reduce((sum, user) => sum + user.ticketsPurchased, 0) * event.price;
     const ticketsSold = DUMMY_BUYERS.reduce((sum, user) => sum + user.ticketsPurchased, 0);
 
@@ -55,7 +55,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, event }) => 
                         {/* 1. Image and Key Stats */}
                         <div className="event-summary-card">
                             <div className="report-image-container">
-                                <img src={imageSrc} alt={event.title} className="report-image" />
+                                <img alt={event.title} className="report-image" />
                             </div>
                             <div className="key-stats">
                                 <div className="stat-box revenue">

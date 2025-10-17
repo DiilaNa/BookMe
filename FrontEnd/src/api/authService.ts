@@ -109,3 +109,10 @@ export const updateEvent = async (eventData: EventFormUpdate) => {
 
     return response.data;
 };
+
+export const getUserDetails = async (keyword: string) => {
+    const response = await api.get(`/admin/users/search`, {
+        params: { keyword },
+    });
+    return response.data;
+};

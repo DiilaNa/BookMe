@@ -3,12 +3,12 @@ import EventFormModal from "./Modals/EventModel.tsx";
 import EventPostCard from "../components/EventPostsCards.tsx";
 import "./Styles/Admin.scss";
 import ActionCard from "../components/Card.tsx";
-import ReportModal from "../pages/Modals/Report.tsx"
+import ReportModal from "../pages/Modals/Report.tsx";
 import EditEventModel from "./Modals/EditEventModel.tsx";
-import {useNavigate} from "react-router-dom";
-import type {EventPost} from "../types/Events.ts";
-import {getAdminEvents} from "../api/authService.ts";
-
+import UserDetailsModal from "./Modals/UserDetailsModel.tsx"; // ✅ correct import
+import { useNavigate } from "react-router-dom";
+import type { EventPost } from "../types/Events.ts";
+import { getAdminEvents } from "../api/authService.ts";
 
 const AdminDashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,15 +16,16 @@ const AdminDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState<EventPost | null>(null);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // NEW: State for Edit modal
-    const [eventToEdit, setEventToEdit] = useState<EventPost | null>(null); // NEW: State for event being edited
-    const navigate = useNavigate();
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [eventToEdit, setEventToEdit] = useState<EventPost | null>(null);
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false); // ✅ new state for user modal
 
+    const navigate = useNavigate();
 
     const fetchEvents = async () => {
         setIsLoading(true);
         try {
-            const userId = localStorage.getItem('userId')
+            const userId = localStorage.getItem("userId");
 
             if (!userId) {
                 console.error("User ID not found in localStorage. Cannot fetch events.");
@@ -33,7 +34,6 @@ const AdminDashboard = () => {
             }
             const data = await getAdminEvents(userId);
             setEvents(data);
-
         } catch (error) {
             console.error("Error fetching events:", error);
         } finally {
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const admin = localStorage.getItem("role");
 
-        if ( !admin || admin  !== "ADMIN") {
+        if (!admin || admin !== "ADMIN") {
             navigate("/");
             return;
         }
@@ -57,7 +57,6 @@ const AdminDashboard = () => {
         alert(`🎉 Event "${title}" successfully posted and ready for sale!`);
         fetchEvents();
     };
-
 
     const handleGoToReports = () => {
         if (events.length > 0) {
@@ -73,23 +72,23 @@ const AdminDashboard = () => {
         setIsEditModalOpen(true);
     };
 
-    const handleEditSeats = () => {
-        if (events.length > 0){
-            setEventToEdit(events[0]);
-            setIsEditModalOpen(true);
-        }else {
-            alert("No events posted yet to manage.");
-        }
+    // ✅ NEW: Open user details modal instead of edit event modal
+    const handleManageUsers = () => {
+        setIsUserModalOpen(true);
     };
+
     const handleSignOut = () => {
         window.localStorage.clear();
         window.location.href = "/";
     };
 
-
     const renderEventPosts = () => {
         if (isLoading) {
-            return <div className="no-posts-message"><h3>Loading Events...</h3></div>;
+            return (
+                <div className="no-posts-message">
+                    <h3>Loading Events...</h3>
+                </div>
+            );
         }
 
         if (events.length === 0) {
@@ -103,8 +102,12 @@ const AdminDashboard = () => {
 
         return (
             <div className="posts-grid">
-                {events.map(event => (
-                    <EventPostCard key={event.id} event={event}  onEditClick={handleEditEvent} />
+                {events.map((event) => (
+                    <EventPostCard
+                        key={event.id}
+                        event={event}
+                        onEditClick={handleEditEvent}
+                    />
                 ))}
             </div>
         );
@@ -115,6 +118,7 @@ const AdminDashboard = () => {
             <button className="sout" onClick={handleSignOut}>
                 Sign Out
             </button>
+
             <header className="dashboard-header">
                 <h1>Admin Control Center 🌟</h1>
                 <p>Manage University Events and Ticket Inventory.</p>
@@ -124,7 +128,7 @@ const AdminDashboard = () => {
                 <ActionCard
                     icon="➕"
                     title=" Post a New Event"
-                    description="create a fresh listing for university events, set ticket details, and publish."
+                    description="Create a fresh listing for university events, set ticket details, and publish."
                     buttonContent="Add New Event Post"
                     buttonClassName="primary"
                     onButtonClick={() => setIsModalOpen(true)}
@@ -140,10 +144,10 @@ const AdminDashboard = () => {
 
                 <ActionCard
                     icon="🎫"
-                    title="Manage Inventory"
-                    description="Adjust available seats and ticket prices for existing events."
-                    buttonContent="Edit Events"
-                    onButtonClick={handleEditSeats}
+                    title="Manage User Details"
+                    description="View all users, their tickets, and event participation."
+                    buttonContent="Show Users"
+                    onButtonClick={handleManageUsers} // ✅ open user modal
                 />
 
                 <div className="event-posts-list">
@@ -157,6 +161,7 @@ const AdminDashboard = () => {
                 onClose={() => setIsModalOpen(false)}
                 onSuccess={handleEventPosted}
             />
+
             <ReportModal
                 isOpen={isReportModalOpen}
                 onClose={() => setIsReportModalOpen(false)}
@@ -168,6 +173,12 @@ const AdminDashboard = () => {
                 onClose={() => setIsEditModalOpen(false)}
                 eventToEdit={eventToEdit}
                 onSuccess={handleEventPosted}
+            />
+
+            {/* ✅ NEW: User details modal */}
+            <UserDetailsModal
+                isOpen={isUserModalOpen}
+                onClose={() => setIsUserModalOpen(false)}
             />
         </div>
     );
