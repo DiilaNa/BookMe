@@ -17,5 +17,5 @@ public interface EventsService {
 
     List<EventsDTO> searchEvents(String email);
 
-    List<Events> loadAllEvents();
+    List<EventsDTO> loadAllEvents();
 }

@@ -1,16 +1,7 @@
 // components/FeaturedEventCard.tsx
 
 import React from 'react';
-interface UserEvent {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    location: string;
-    price: number;
-    imageBase64: string | null;
-    totalSeats: number;
-}
+import type { UserEvent } from "../types/Events";
 
 interface FeaturedEventCardProps {
     event: UserEvent;
@@ -18,9 +9,13 @@ interface FeaturedEventCardProps {
 }
 
 const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) => {
-    const imageSrc = event.imageBase64 || '/placeholder-featured.jpg';
+    const imageSrc = event.eventImageBase64 || '/placeholder-featured.jpg';
     const formattedDate = new Date(event.date).toLocaleDateString(undefined, {
-        weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
     });
 
     return (
@@ -36,7 +31,7 @@ const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) =
                 <div className="event-meta">
                     <p>📍 {event.location}</p>
                     <p>⏰ {formattedDate}</p>
-                    <p>💰 **${event.price.toFixed(2)}**</p>
+                    <p><strong>💰 ${event.price.toFixed(2)}</strong></p>
                 </div>
 
                 <button

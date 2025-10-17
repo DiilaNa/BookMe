@@ -1,8 +1,9 @@
 package lk.dilan.project.backend.controller;
 
+import lk.dilan.project.backend.dto.EventsDTO;
 import lk.dilan.project.backend.dto.PaymentsDTO;
 import lk.dilan.project.backend.dto.login.ApiResponseDto;
-import lk.dilan.project.backend.entity.Events;
+import java.util.Comparator;
 import lk.dilan.project.backend.service.EventsService;
 import lk.dilan.project.backend.service.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,8 @@ public class UserController {
 
     @GetMapping("/loadEvents")
     public ResponseEntity<ApiResponseDto> getAllEvents() {
-        List<Events> events =  eventsService.loadAllEvents();
+        List<EventsDTO> events =  eventsService.loadAllEvents();
+        events.sort(Comparator.comparing(EventsDTO::getDate).reversed());
         return ResponseEntity.ok(new ApiResponseDto(
                 200,
                 "ok",

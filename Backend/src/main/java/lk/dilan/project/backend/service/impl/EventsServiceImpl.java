@@ -73,7 +73,6 @@ public class EventsServiceImpl implements EventsService {
 
             if (event.getImage() != null && event.getImage().length > 0) {
                 String base64 = Base64.getEncoder().encodeToString(event.getImage());
-                // add the data URL prefix
                 dto.setEventImageBase64("data:image/jpeg;base64," + base64);
             }
 
@@ -90,8 +89,17 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
-    public List<Events> loadAllEvents() {
+    public List<EventsDTO> loadAllEvents() {
         List<Events> events = eventsRepository.findAll();
-        return modelMapper.map(events,new TypeToken<List<EventsDTO>>(){}.getType());
+
+        return events.stream().map(event -> {
+            EventsDTO dto = modelMapper.map(event, EventsDTO.class);
+            if (event.getImage() != null && event.getImage().length > 0) {
+                dto.setEventImageBase64("data:image/jpeg;base64," +
+                        Base64.getEncoder().encodeToString(event.getImage()));
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
+
 }

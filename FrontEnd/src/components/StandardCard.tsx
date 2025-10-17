@@ -1,22 +1,13 @@
 import React from 'react';
+import type {UserEvent} from "../types/Events.ts";
 
-interface UserEvent {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    location: string;
-    price: number;
-    imageBase64: string | null;
-    totalSeats: number;
-}
-interface StandardEventCardProps {
+interface  StandardEventCardProps {
     event: UserEvent;
     onBuy: (id: string, title: string) => void;
 }
 
 const StandardEventCard: React.FC<StandardEventCardProps> = ({ event, onBuy }) => {
-    const imageSrc = event.imageBase64 || '/placeholder-standard.jpg';
+    const imageSrc = event.eventImageBase64 || '/placeholder-standard.jpg';
     const formattedDate = new Date(event.date).toLocaleDateString(undefined, {
         month: 'short', day: 'numeric', year: '2-digit'
     });

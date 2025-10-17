@@ -1,5 +1,5 @@
 import api from "./apiClient";
-import type {EventForm} from "../types/Events.ts";
+import type {EventForm, UserEvent} from "../types/Events.ts";
 import type {EventPost} from "../types/Events.ts";
 
 export const signUpUser = async (userData: {
@@ -116,3 +116,19 @@ export const getUserDetails = async (keyword: string) => {
     });
     return response.data;
 };
+
+export const getAllEvents = async (): Promise<UserEvent[]> => {
+    const response = await api.get(`/user/loadEvents`);
+    return response.data.data.map((event: any) => ({
+        id: event.id,
+        title: event.title,
+        description: event.description,
+        date: event.date,
+        location: event.location,
+        price: event.price,
+        totalSeats: event.totalSeats,
+        eventImageBase64: event.eventImageBase64 || null,
+        eventImageFileName: event.imageName || null,
+    }));
+};
+
