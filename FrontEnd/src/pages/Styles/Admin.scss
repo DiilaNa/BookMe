@@ -1,7 +1,7 @@
 $primary-color: #6c63ff;
 $secondary-color: #836fff;
 $text-color: #333;
-$light-text-color: #777;
+$light-text-color: #ffffff;
 $card-bg: #fff;
 $shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
 $shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -11,7 +11,46 @@ $shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
   background-color: #f4f7fa; // Light, neutral background
   padding: 3rem 2rem;
   font-family: 'Inter', sans-serif;
+  // Make the container relative to position the sign-out button
+  position: relative;
 }
+
+// --- Sign Out Button Styles ---
+.sout {
+  // Position it in the top-right corner
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+
+  // Basic button styling
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px; // Modern rounded corners
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+
+  // Color scheme: Subtle but distinct
+  background-color: #ef2b2b; // White background
+  color: $light-text-color; // Subtle text color
+  box-shadow: $shadow-light; // A light shadow for depth
+
+  // Hover and active states for better user experience
+  &:hover {
+    background-color: #f0f0f0; // Slightly darker on hover
+    color: $text-color; // Darker text on hover
+    box-shadow: $shadow-hover; // Stronger shadow
+    transform: translateY(-1px); // Subtle lift effect
+  }
+
+  &:active {
+    background-color: #e0e0e0;
+    transform: translateY(0); // Press-down effect
+  }
+}
+
+// --- End Sign Out Button Styles ---
 
 .dashboard-header {
   text-align: center;
@@ -37,3 +76,37 @@ $shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
 }
 
+.event-posts-list {
+  // Span across all columns in the grid layout for better visibility
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+
+  h2 {
+    color: $text-color;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.no-posts-message {
+  padding: 2rem;
+  text-align: center;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  background-color: $card-bg;
+
+  h3 {
+    color: $text-color;
+    margin-bottom: 0.5rem;
+  }
+  p {
+    color: $light-text-color;
+  }
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
