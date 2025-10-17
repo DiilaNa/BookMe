@@ -1,21 +1,16 @@
 package lk.dilan.project.backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.dilan.project.backend.dto.EventsDTO;
 import lk.dilan.project.backend.dto.login.ApiResponseDto;
 import lk.dilan.project.backend.service.EventsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 
 @Slf4j
@@ -60,12 +55,12 @@ public class AdminController {
 
 
     @GetMapping("/search")
-    public List<EventsDTO> searchEvents(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
-    ) {
-        return eventsService.searchEvents(keyword, location, startDate, endDate);
+    public ResponseEntity<ApiResponseDto> searchEvents(@RequestParam(required = false) String email) {
+        List<EventsDTO> s =  eventsService.searchEvents(email);
+        return ResponseEntity.ok(new ApiResponseDto(
+                200,
+                "ok",
+                s
+        ));
     }
 }

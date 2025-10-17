@@ -15,7 +15,7 @@ public interface EventsService {
 
     void updateEvent(EventsDTO eventsDTO,MultipartFile file) throws IOException;
 
-    List<EventsDTO> searchEvents(String keyword, String location, LocalDateTime startDate, LocalDateTime endDate);
+    List<EventsDTO> searchEvents(String email);
 
     List<Events> loadAllEvents();
 }

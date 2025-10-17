@@ -17,9 +17,6 @@ public interface EventsRepository extends MongoRepository<Events, String> {
             "{ 'location': { $regex: ?1, $options: 'i' } }, " +
             "{ 'date': { $gte: ?2, $lte: ?3 } } " +
             "] }")
-    List<Events> searchEvents(String keyword, String location, LocalDateTime startDate, LocalDateTime endDate);
+    List<Events> searchEvents(String keyword);
 
-/*
-    List<Events> searchEvents(String keyword, String location, LocalDateTime startDate, LocalDateTime endDate);
-*/
 }

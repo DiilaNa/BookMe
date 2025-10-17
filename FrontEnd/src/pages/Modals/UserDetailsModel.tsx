@@ -56,7 +56,7 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         <Search className="search-icon" size={18} />
                         <input
                             type="text"
-                            placeholder="Search by name or email..."
+                            placeholder="Search by email... "
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -73,7 +73,7 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 ) : users.length === 0 ? (
                     <div className="no-users-container">
                         <img src="/assets/no-data.svg" alt="No Users" />
-                        <h3>No User Details Found 😞</h3>
+                        <h3>No User Details Found </h3>
                         <p>Try adjusting your search or check back later.</p>
                     </div>
                 ) : (
