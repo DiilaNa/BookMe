@@ -1,11 +1,10 @@
 // components/FeaturedEventCard.tsx
 
 import React from 'react';
-import type { UserEvent } from "../types/Events";
-
+import type {UserEvent} from "../types/Events";
 interface FeaturedEventCardProps {
     event: UserEvent;
-    onBuy: (id: string, title: string) => void;
+    onBuy?: (event: UserEvent) => Promise<void>;
 }
 
 const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) => {
@@ -21,7 +20,7 @@ const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) =
     return (
         <div className="event-card featured-card">
             <div className="featured-image-wrapper">
-                <img src={imageSrc} alt={event.title} className="event-image" />
+                <img src={imageSrc} alt={event.title} className="event-image"/>
             </div>
             <div className="featured-content">
                 <span className="card-badge">Most Recent</span>
@@ -34,12 +33,14 @@ const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) =
                     <p><strong>💰 ${event.price.toFixed(2)}</strong></p>
                 </div>
 
-                <button
-                    className="buy-button primary-buy-button"
-                    onClick={() => onBuy(event.id, event.title)}
-                >
-                    Buy Tickets Now
-                </button>
+                {onBuy && (
+                    <button
+                        className="buy-button primary-buy-button"
+                        onClick={() => onBuy(event)}
+                    >
+                        Buy Tickets Now
+                    </button>
+                )}
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 import api from "./apiClient";
-import type {EventForm, UserEvent} from "../types/Events.ts";
+import type {EventForm, PaymentData, UserEvent} from "../types/Events.ts";
 import type {EventPost} from "../types/Events.ts";
 
 export const signUpUser = async (userData: {
@@ -130,5 +130,15 @@ export const getAllEvents = async (): Promise<UserEvent[]> => {
         eventImageBase64: event.eventImageBase64 || null,
         eventImageFileName: event.imageName || null,
     }));
+};
+
+export const processPayment = async (paymentData: PaymentData) => {
+    try {
+        const response = await api.post("/user/processPayment", paymentData);
+        return response.data; // backend returns success message or saved payment object
+    } catch (error) {
+        console.error("Payment failed:", error);
+        throw new Error("Payment failed. Please try again.");
+    }
 };
 

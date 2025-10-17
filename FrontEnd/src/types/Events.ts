@@ -34,3 +34,10 @@ export interface UserEvent {
     eventImageBase64: string | null;
     eventImageFileName: string | null;
 }
+
+export interface PaymentData {
+    userId: string | null;
+    eventId: string;
+    amount: number;
+    method: string; // e.g., "CARD"
+}

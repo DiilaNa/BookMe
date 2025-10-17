@@ -3,7 +3,7 @@ import type {UserEvent} from "../types/Events.ts";
 
 interface  StandardEventCardProps {
     event: UserEvent;
-    onBuy: (id: string, title: string) => void;
+    onBuy?: (event: UserEvent) => Promise<void>;
 }
 
 const StandardEventCard: React.FC<StandardEventCardProps> = ({ event, onBuy }) => {
@@ -28,7 +28,7 @@ const StandardEventCard: React.FC<StandardEventCardProps> = ({ event, onBuy }) =
             <div className="card-footer">
                 <button
                     className="buy-button secondary-buy-button"
-                    onClick={() => onBuy(event.id, event.title)}
+                    onClick={() => onBuy?.(event)}
                 >
                     Buy Now
                 </button>

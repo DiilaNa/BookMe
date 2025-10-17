@@ -21,15 +21,14 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public PaymentsDTO savePayment(PaymentsDTO paymentsDTO) {
+    public PaymentsDTO processPayment(PaymentsDTO paymentsDTO) {
         Payments payments = modelMapper.map(paymentsDTO, Payments.class);
         payments.setStatus(PaymentStatus.SUCCESS);
         Payments payments1 = paymentRepository.save(payments);
 
         if (payments.getStatus() == PaymentStatus.SUCCESS) {
-            ticketService.createTicket(paymentsDTO);
+            ticketService.createTicket(payments1);
         }
         return modelMapper.map(payments1, PaymentsDTO.class);
-
     }
 }

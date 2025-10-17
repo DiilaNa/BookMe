@@ -30,14 +30,13 @@ public class UserController {
         ));
     }
 
-    @PostMapping("/savePayment")
-    public ResponseEntity<ApiResponseDto> savePayment(@RequestBody PaymentsDTO paymentsDTO){
-        paymentService.savePayment(paymentsDTO);
+    @PostMapping("/processPayment")
+    public ResponseEntity<ApiResponseDto> processPayment(@RequestBody PaymentsDTO paymentsDTO){
+        paymentService.processPayment(paymentsDTO);
         return ResponseEntity.ok(new ApiResponseDto(
                 200,
                 "ok",
                 "Payment Saved"
         ));
     }
-    /*test*/
 }

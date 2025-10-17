@@ -3,7 +3,7 @@ import FeaturedEventCard from '../components/FeaturedCard.tsx';
 import StandardEventCard from '../components/StandardCard.tsx';
 import './Styles/User.scss';
 import {useNavigate} from "react-router-dom";
-import {getAllEvents} from "../api/authService.ts";
+import {getAllEvents, processPayment} from "../api/authService.ts";
 import type {UserEvent} from "../types/Events.ts";
 
 
@@ -33,10 +33,22 @@ const UserEventsPage: React.FC = () => {
         fetchEvents();
     }, []);
 
-    const handleBuyNow = (eventId: string, title: string) => {
-        alert(`Redirecting to purchase page for event ID: ${eventId} (${title})`);
-        // navigate(`/checkout/${eventId}`);
+    const handleBuyNow = async (event:UserEvent) => {
+        const paymentData = {
+            userId: localStorage.getItem("userId"),
+            eventId: event.id,
+            amount: event.price,  // use the actual event price
+            method: "CARD",
+        };
+        try {
+            const result = await processPayment(paymentData);
+            alert("Payment Successful! Ticket will be emailed to you.");
+            console.log("Payment result:", result);
+        } catch (error) {
+            alert((error as Error).message);
+        }
     };
+
 
     const featuredEvent = events[0];
     const standardEvents = events.slice(1);

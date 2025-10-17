@@ -5,6 +5,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import lk.dilan.project.backend.dto.PaymentsDTO;
+import lk.dilan.project.backend.entity.Payments;
 import lk.dilan.project.backend.entity.Tickets;
 import lk.dilan.project.backend.entity.User;
 import lk.dilan.project.backend.entity.enums.TicketStatus;
@@ -29,7 +30,7 @@ public class TicketServiceImpl implements TicketService {
     private final EmailService emailService;
     @Override
     @Transactional
-    public Tickets createTicket(PaymentsDTO paymentsDTO) {
+    public Tickets createTicket(Payments paymentsDTO) {
         try {
             // 1️⃣ Generate QR code as bytes
             String qrContent = "EVENT:" + paymentsDTO.getEventId() + "|USER:" + paymentsDTO.getUserId() + "|PAYMENT:" + paymentsDTO.getId();
