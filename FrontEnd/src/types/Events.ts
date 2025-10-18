@@ -33,6 +33,7 @@ export interface UserEvent {
     price: number;
     eventImageBase64: string | null;
     eventImageFileName: string | null;
+    isBought: boolean;
 }
 
 export interface PaymentData {

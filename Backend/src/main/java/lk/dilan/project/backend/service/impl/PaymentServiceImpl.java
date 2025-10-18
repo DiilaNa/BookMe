@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
@@ -30,5 +32,20 @@ public class PaymentServiceImpl implements PaymentService {
             ticketService.createTicket(payments1);
         }
         return modelMapper.map(payments1, PaymentsDTO.class);
+    }
+    @Override
+    public List<PaymentsDTO> getPurchasedEventIds(String userId) {
+        List<Payments> payments = paymentRepository.findByUserIdAndStatus(userId, PaymentStatus.SUCCESS);
+        return payments.stream()
+                .map(payment -> new PaymentsDTO(
+                        payment.getId(),
+                        payment.getUserId(),
+                        payment.getEventId(),
+                        payment.getAmount(),
+                        payment.getPaymentMethod(),
+                        payment.getStatus(),
+                        payment.getCreatedAt()
+                ))
+                .toList();
     }
 }

@@ -27,10 +27,11 @@ const StandardEventCard: React.FC<StandardEventCardProps> = ({ event, onBuy }) =
 
             <div className="card-footer">
                 <button
-                    className="buy-button secondary-buy-button"
-                    onClick={() => onBuy?.(event)}
+                    className={`buy-button ${event.isBought ? 'bought' : 'buy-now'}`}
+                    onClick={() => !event.isBought && onBuy && onBuy(event)}
+                    disabled={event.isBought} // Disable the button if already bought
                 >
-                    Buy Now
+                    {event.isBought ? '🎟️ Bought' : 'Buy Now'}
                 </button>
             </div>
         </div>

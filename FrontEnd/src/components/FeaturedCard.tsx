@@ -35,10 +35,11 @@ const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) =
 
                 {onBuy && (
                     <button
-                        className="buy-button primary-buy-button"
-                        onClick={() => onBuy(event)}
+                        className={`buy-button ${event.isBought ? 'bought' : 'buy-now'}`}
+                        onClick={() => !event.isBought && onBuy && onBuy(event)}
+                        disabled={event.isBought} // Disable the button if already bought
                     >
-                        Buy Tickets Now
+                        {event.isBought ? '🎟️ Bought' : 'Buy Now'}
                     </button>
                 )}
             </div>

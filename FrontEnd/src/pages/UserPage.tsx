@@ -3,7 +3,7 @@ import FeaturedEventCard from '../components/FeaturedCard.tsx';
 import StandardEventCard from '../components/StandardCard.tsx';
 import './Styles/User.scss';
 import {useNavigate} from "react-router-dom";
-import {getAllEvents, processPayment} from "../api/authService.ts";
+import {getAllEvents, getPurchasedEvents, processPayment} from "../api/authService.ts";
 import type {UserEvent} from "../types/Events.ts";
 
 
@@ -11,14 +11,27 @@ const UserEventsPage: React.FC = () => {
     const [events, setEvents] = useState<UserEvent[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const userId = localStorage.getItem("userId");
 
     const fetchEvents = async () => {
-        setIsLoading(true);
         try {
-            const data = await getAllEvents();
-            setEvents(data); // already sorted by latest
-        } catch (error) {
-            console.error("Error fetching events:", error);
+            const [eventsData, purchased] = await Promise.all([
+                getAllEvents(),
+                getPurchasedEvents(userId!)
+            ]);
+
+            // extract all purchased eventIds
+            const purchasedIds = purchased.map((p: any) => p.eventId);
+
+            // mark bought events
+            const updatedEvents = eventsData.map((event: UserEvent) => ({
+                ...event,
+                isBought: purchasedIds.includes(event.id)
+            }));
+
+            setEvents(updatedEvents);
+        } catch (err) {
+            console.error("Error loading events:", err);
         } finally {
             setIsLoading(false);
         }
@@ -33,17 +46,28 @@ const UserEventsPage: React.FC = () => {
         fetchEvents();
     }, []);
 
-    const handleBuyNow = async (event:UserEvent) => {
+
+    const handleBuyNow = async (event: UserEvent) => {
         const paymentData = {
             userId: localStorage.getItem("userId"),
             eventId: event.id,
-            amount: event.price,  // use the actual event price
+            amount: event.price,
             method: "CARD",
         };
         try {
             const result = await processPayment(paymentData);
+
             alert("Payment Successful! Ticket will be emailed to you.");
             console.log("Payment result:", result);
+
+            setEvents(prevEvents =>
+                prevEvents.map(e =>
+                    e.id === event.id
+                        ? { ...e, isBought: true }
+                        : e
+                )
+            );
+
         } catch (error) {
             alert((error as Error).message);
         }

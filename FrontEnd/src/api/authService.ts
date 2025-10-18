@@ -135,10 +135,13 @@ export const getAllEvents = async (): Promise<UserEvent[]> => {
 export const processPayment = async (paymentData: PaymentData) => {
     try {
         const response = await api.post("/user/processPayment", paymentData);
-        return response.data; // backend returns success message or saved payment object
+        return response.data.data; // backend returns success message or saved payment object
     } catch (error) {
         console.error("Payment failed:", error);
         throw new Error("Payment failed. Please try again.");
     }
 };
-
+export const getPurchasedEvents = async (userId: string) => {
+    const response = await api.get(`/user/purchasedEvents/${userId}`);
+    return response.data.data; // the list of PaymentsDTO
+};

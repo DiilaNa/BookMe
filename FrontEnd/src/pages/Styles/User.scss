@@ -203,3 +203,18 @@ $shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.15);
     padding: 0 1.5rem 1.5rem;
   }
 }
+
+/*-------------------------------*/
+
+.buy-button.bought {
+  background-color: #ccc; /* Grey it out */
+  color: #555;
+  cursor: default; /* Change cursor to indicate it's not interactive */
+  border: 1px solid #aaa;
+}
+
+.buy-button.buy-now {
+  background-color: #007bff; /* Primary action color */
+  color: white;
+  cursor: pointer;
+}
