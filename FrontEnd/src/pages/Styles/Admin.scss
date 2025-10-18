@@ -1,7 +1,7 @@
 $primary-color: #6c63ff;
 $secondary-color: #836fff;
 $text-color: #333;
-$light-text-color: #ffffff;
+$light-text-color: #777;
 $card-bg: #fff;
 $shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
 $shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@ $shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
 
   // Color scheme: Subtle but distinct
   background-color: #ef2b2b; // White background
-  color: $light-text-color; // Subtle text color
+  color: white; // Subtle text color
   box-shadow: $shadow-light; // A light shadow for depth
 
   // Hover and active states for better user experience

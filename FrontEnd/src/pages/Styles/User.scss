@@ -8,6 +8,8 @@ $bg-color: #f4f7fa;
 $card-bg: #fff;
 $shadow-soft: 0 6px 15px rgba(0, 0, 0, 0.08);
 $shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.15);
+$shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+$shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
 
 .user-events-page {
   min-height: 100vh;
@@ -218,3 +220,39 @@ $shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.15);
   color: white;
   cursor: pointer;
 }
+
+// --- Sign Out Button Styles ---
+.sout {
+  // Position it in the top-right corner
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+
+  // Basic button styling
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px; // Modern rounded corners
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+
+  // Color scheme: Subtle but distinct
+  background-color: #ef2b2b; // White background
+  color: white; // Subtle text color
+  box-shadow: $shadow-light; // A light shadow for depth
+
+  &:hover {
+    background-color: #f0f0f0; // Slightly darker on hover
+    color: $text-color; // Darker text on hover
+    box-shadow: $shadow-hover; // Stronger shadow
+    transform: translateY(-1px); // Subtle lift effect
+  }
+
+  &:active {
+    background-color: #e0e0e0;
+    transform: translateY(0); // Press-down effect
+  }
+}
+
+// --- End Sign Out Button Styles ---

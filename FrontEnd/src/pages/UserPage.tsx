@@ -73,6 +73,11 @@ const UserEventsPage: React.FC = () => {
         }
     };
 
+    const handleSignOut = () => {
+        window.localStorage.clear();
+        window.location.href = "/";
+    };
+
 
     const featuredEvent = events[0];
     const standardEvents = events.slice(1);
@@ -82,6 +87,9 @@ const UserEventsPage: React.FC = () => {
 
     return (
         <div className="user-events-page">
+            <button className="sout" onClick={handleSignOut}>
+                Sign Out
+            </button>
             <header className="page-header">
                 <h1>Discover University Events 🎟️</h1>
                 <p>Find your next experience and grab your tickets now!</p>
@@ -90,7 +98,7 @@ const UserEventsPage: React.FC = () => {
             {featuredEvent && (
                 <section className="featured-section">
                     <h2 className="section-title">✨ Featured Event</h2>
-                    <FeaturedEventCard event={featuredEvent} onBuy={handleBuyNow} />
+                    <FeaturedEventCard event={featuredEvent} onBuy={handleBuyNow}/>
                 </section>
             )}
 
@@ -98,7 +106,7 @@ const UserEventsPage: React.FC = () => {
                 <section className="events-grid-section">
                     <div className="events-grid">
                         {standardEvents.map(event => (
-                            <StandardEventCard key={event.id} event={event} onBuy={handleBuyNow} />
+                            <StandardEventCard key={event.id} event={event} onBuy={handleBuyNow}/>
                         ))}
                     </div>
                 </section>
