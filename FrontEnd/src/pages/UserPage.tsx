@@ -5,6 +5,8 @@ import './Styles/User.scss';
 import {useNavigate} from "react-router-dom";
 import {getAllEvents, getPurchasedEvents, processPayment} from "../api/authService.ts";
 import type {UserEvent} from "../types/Events.ts";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const UserEventsPage: React.FC = () => {
@@ -55,9 +57,8 @@ const UserEventsPage: React.FC = () => {
             method: "CARD",
         };
         try {
-            const result = await processPayment(paymentData);
-            alert("Payment Successful! Ticket will be emailed to you.");
-            console.log("Payment result:", result);
+            await processPayment(paymentData);
+            toast.success("Payment SuccessFull")
             setEvents(prevEvents =>
                 prevEvents.map(e =>
                     e.id === event.id
@@ -67,7 +68,8 @@ const UserEventsPage: React.FC = () => {
             );
 
         } catch (error) {
-            alert((error as Error).message);
+            toast.error("Error")
+            console.log(error)
         }
     };
 
@@ -106,6 +108,7 @@ const UserEventsPage: React.FC = () => {
                         {standardEvents.map(event => (
                             <StandardEventCard key={event.id} event={event} onBuy={handleBuyNow}/>
                         ))}
+                        <ToastContainer position="top-right" autoClose={3000} />
                     </div>
                 </section>
             )}

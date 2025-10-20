@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import EventFormModal from "./Modals/EventModel.tsx";
 import EventPostCard from "../components/EventPostsCards.tsx";
 import "./Styles/Admin.scss";
@@ -9,6 +9,8 @@ import UserDetailsModal from "./Modals/UserDetailsModel.tsx";
 import { useNavigate } from "react-router-dom";
 import type { EventPost } from "../types/Events.ts";
 import { getAdminEvents } from "../api/authService.ts";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminDashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,17 +55,17 @@ const AdminDashboard = () => {
 
     const handleEventPosted = (title: string) => {
         setIsModalOpen(false);
-        alert(`🎉 Event "${title}" successfully posted and ready for sale!`);
+        toast.success(`🎉 Event "${title}" successfully posted and ready for sale!`);
         fetchEvents();
     };
 
     const handleGoToReports = () => {
         if (events.length > 0) {
-            alert("Still on working")
+            toast.info("Still on working")
             setSelectedEvent(events[0]);
             setIsReportModalOpen(true);
         } else {
-            alert("No events posted yet to view a report.");
+            toast.error("No events posted yet to view a report.")
         }
     };
 
@@ -154,6 +156,7 @@ const AdminDashboard = () => {
                     <h2>Active Event Posts ({events.length})</h2>
                     {renderEventPosts()}
                 </div>
+                <ToastContainer position="top-right" autoClose={3000} />
             </div>
 
             <EventFormModal

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { X, Search } from "lucide-react";
 import { getUserModalDetails} from "../../api/authService.ts";
 import "../Styles/UserDetailsModel.scss";
+import 'react-toastify/dist/ReactToastify.css';
+import {toast, ToastContainer} from "react-toastify";
+
 
 interface UserSummary {
     id: string;
@@ -36,6 +39,7 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
             setUsers(data);
         } catch (e) {
             console.error("Error fetching users:", e);
+            toast.error("search failed")
         } finally {
             setLoading(false);
         }
@@ -67,6 +71,7 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         />
                     </div>
                     <button className="search-btn" onClick={handleSearch}>Search</button>
+                    <ToastContainer position="top-right" autoClose={3000} />
                 </div>
 
                 {loading ? (

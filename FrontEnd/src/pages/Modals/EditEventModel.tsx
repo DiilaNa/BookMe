@@ -3,8 +3,9 @@ import React, { useState, useMemo, useEffect } from "react";
 import type { FormEvent } from "react";
 import FormInput from "../../components/FormInput.tsx";
 import ImageUpload from "../../components/ImageUpload.tsx";
-
+import 'react-toastify/dist/ReactToastify.css';
 import "../Styles/EventModel.scss";
+import {toast, ToastContainer} from "react-toastify";
 
 interface EventForm {
     id: string;
@@ -134,8 +135,10 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
         try {
             await updateEvent(form);
             onSuccess(form.title);
+            toast.success("Updated Successfully")
         } catch (err) {
             console.error("Error updating event:", err);
+            toast.error("Failed to update")
             setValidationErrors({ api: "Failed to update event. Please try again." });
         } finally {
             setLoading(false);
@@ -246,6 +249,7 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
                         <button type="button" className="action-button secondary" onClick={onClose}>
                             Cancel
                         </button>
+                        <ToastContainer position="top-right" autoClose={3000} />
                     </form>
                 </div>
             </div>

@@ -5,6 +5,9 @@ import "../Styles/EventModel.scss";
 import ImageUpload from "../../components/ImageUpload.tsx";
 import {postNewEvent} from "../../api/authService.ts";
 import type {EventForm} from "../../types/Events.ts";
+import 'react-toastify/dist/ReactToastify.css';
+import {toast, ToastContainer} from "react-toastify";
+
 
 const initialFormState: EventForm = {
     title: "",
@@ -122,7 +125,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
             await postNewEvent(form);
             setForm(initialFormState);
             onSuccess(form.title);
-
+            toast.success("Saved successfully")
         } catch (err) {
             setValidationErrors({ api: "Failed to post event. Check server status or file size." });
         } finally {
@@ -231,6 +234,7 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
                         <button type="submit" disabled={loading} className="submit-button">
                             {loading ? "Publishing..." : "Publish Event"}
                         </button>
+                        <ToastContainer position="top-right" autoClose={3000} />
                     </form>
                 </div>
             </div>

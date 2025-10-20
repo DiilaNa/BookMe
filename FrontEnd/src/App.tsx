@@ -3,7 +3,6 @@ import {Routes, Route} from "react-router-dom"
 import SignUp from './pages/SignUp.tsx'
 import Login from "./pages/Login.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
-import HomePage from "./pages/HomePage.tsx";
 import UserPage from "./pages/UserPage.tsx";
 
 function App() {
@@ -11,7 +10,6 @@ function App() {
         <Routes>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<Login />} />
-            <Route path="/home" element={<HomePage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/user" element={<UserPage />} />
         </Routes>
