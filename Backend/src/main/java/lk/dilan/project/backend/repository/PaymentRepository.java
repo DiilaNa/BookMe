@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface PaymentRepository extends MongoRepository<Payments,String> {
     List<Payments> findByUserIdAndStatus(String userId, PaymentStatus status);
+    List<Payments> findByUserId(String userId);/*user detail modal*/
 }

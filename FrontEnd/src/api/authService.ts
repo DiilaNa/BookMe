@@ -111,7 +111,7 @@ export const updateEvent = async (eventData: EventFormUpdate) => {
 };
 
 export const getUserDetails = async (keyword: string) => {
-    const response = await api.get(`/user/search`, {
+    const response = await api.get(`/admin/search`, {
         params: { keyword },
     });
     return response.data;
@@ -144,4 +144,11 @@ export const processPayment = async (paymentData: PaymentData) => {
 export const getPurchasedEvents = async (userId: string) => {
     const response = await api.get(`/user/purchasedEvents/${userId}`);
     return response.data.data; // the list of PaymentsDTO
+};
+
+export const getUserModalDetails = async (keyword: string) => {
+    const response = await api.get(`/userDetails/user-details`, {
+        params: { keyword },
+    });
+    return response.data;
 };

@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { X, Search } from "lucide-react";
-import { getUserDetails } from "../../api/authService.ts";
+import { getUserModalDetails} from "../../api/authService.ts";
 import "../Styles/UserDetailsModel.scss";
 
 interface UserSummary {
     id: string;
     name: string;
     email: string;
+    phone: string;
     ticketCount: number;
+    totalPayments: number;
+    paymentStatus: string;
     eventNames: string;
 }
+
 
 interface Props {
     isOpen: boolean;
@@ -28,7 +32,7 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
     const fetchUsers = async (keyword?: string) => {
         setLoading(true);
         try {
-            const data = await getUserDetails(keyword || "");
+            const data = await getUserModalDetails(keyword || "");
             setUsers(data);
         } catch (e) {
             console.error("Error fetching users:", e);
@@ -72,7 +76,6 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                     </div>
                 ) : users.length === 0 ? (
                     <div className="no-users-container">
-                        <img src="/assets/no-data.svg" alt="No Users" />
                         <h3>No User Details Found </h3>
                         <p>Try adjusting your search or check back later.</p>
                     </div>
@@ -83,7 +86,10 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Phone</th>
                                 <th>Tickets Bought</th>
+                                <th>Total Payments (LKR)</th>
+                                <th>Payment Status</th>
                                 <th>Event Names</th>
                             </tr>
                             </thead>
@@ -92,13 +98,15 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                 <tr key={u.id}>
                                     <td>{u.name}</td>
                                     <td>{u.email}</td>
+                                    <td>{u.phone || "—"}</td>
                                     <td>{u.ticketCount}</td>
-                                    <td className="event-names">
-                                        {u.eventNames || "—"}
-                                    </td>
+                                    <td>{u.totalPayments.toFixed(2)}</td>
+                                    <td>{u.paymentStatus}</td>
+                                    <td className="event-names">{u.eventNames || "—"}</td>
                                 </tr>
                             ))}
                             </tbody>
+
                         </table>
                     </div>
                 )}
