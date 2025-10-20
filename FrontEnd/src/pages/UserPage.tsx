@@ -58,7 +58,10 @@ const UserEventsPage: React.FC = () => {
         };
         try {
             await processPayment(paymentData);
-            toast.success("Payment SuccessFull")
+            toast.success("Payment SuccessFull", {
+                autoClose: 3000,
+                pauseOnHover: true,
+            })
             setEvents(prevEvents =>
                 prevEvents.map(e =>
                     e.id === event.id
@@ -74,6 +77,10 @@ const UserEventsPage: React.FC = () => {
     };
 
     const handleSignOut = () => {
+        toast.info("SignOut from the Page", {
+            autoClose: 3000,
+            pauseOnHover: true,
+        })
         window.localStorage.clear();
         window.location.href = "/";
     };

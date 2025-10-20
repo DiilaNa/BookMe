@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import {Link, useNavigate} from "react-router-dom"; // 👈 New: Import Link for navigation
+import {Link, useNavigate} from "react-router-dom";
 import "./Styles/SignUp.scss";
 import FormInput from "../components/FormInput.tsx";
 import {signUpUser} from "../api/authService.ts";

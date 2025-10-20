@@ -36,7 +36,10 @@ const AdminDashboard = () => {
             const data = await getAdminEvents(userId);
             setEvents(data);
         } catch (error) {
-            console.error("Error fetching events:", error);
+           toast.error("Loading Failed", {
+               autoClose: 3000,
+               pauseOnHover: true,
+           })
         } finally {
             setIsLoading(false);
         }
@@ -54,18 +57,27 @@ const AdminDashboard = () => {
     }, []);
 
     const handleEventPosted = (title: string) => {
+        toast.success(`🎉 Event "${title}" successfully posted and ready for sale!`, {
+                autoClose: 3000,
+                pauseOnHover: true,
+            });
         setIsModalOpen(false);
-        toast.success(`🎉 Event "${title}" successfully posted and ready for sale!`);
         fetchEvents();
     };
 
     const handleGoToReports = () => {
         if (events.length > 0) {
-            toast.info("Still on working")
+            toast.info("Still on working", {
+                autoClose: 3000,
+                pauseOnHover: true,
+            })
             setSelectedEvent(events[0]);
             setIsReportModalOpen(true);
         } else {
-            toast.error("No events posted yet to view a report.")
+            toast.error("No events posted yet to view a report.", {
+                autoClose: 3000,
+                pauseOnHover: true,
+            })
         }
     };
 
@@ -74,12 +86,15 @@ const AdminDashboard = () => {
         setIsEditModalOpen(true);
     };
 
-    // ✅ NEW: Open user details modal instead of edit event modal
     const handleManageUsers = () => {
         setIsUserModalOpen(true);
     };
 
     const handleSignOut = () => {
+        toast.info("SignOut from the Page", {
+            autoClose: 3000,
+            pauseOnHover: true,
+        })
         window.localStorage.clear();
         window.location.href = "/";
     };
@@ -178,7 +193,6 @@ const AdminDashboard = () => {
                 onSuccess={handleEventPosted}
             />
 
-            {/* ✅ NEW: User details modal */}
             <UserDetailsModal
                 isOpen={isUserModalOpen}
                 onClose={() => setIsUserModalOpen(false)}
