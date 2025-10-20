@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import EventFormModal from "./Modals/EventModel.tsx";
 import EventPostCard from "../components/EventPostsCards.tsx";
 import "./Styles/Admin.scss";
-import ActionCard from "../components/Card.tsx";
+import ActionCard from "../components/ActionCard.tsx";
 import ReportModal from "../pages/Modals/Report.tsx";
 import EditEventModel from "./Modals/EditEventModel.tsx";
-import UserDetailsModal from "./Modals/UserDetailsModel.tsx"; // ✅ correct import
+import UserDetailsModal from "./Modals/UserDetailsModel.tsx";
 import { useNavigate } from "react-router-dom";
 import type { EventPost } from "../types/Events.ts";
 import { getAdminEvents } from "../api/authService.ts";
@@ -18,8 +18,7 @@ const AdminDashboard = () => {
     const [selectedEvent, setSelectedEvent] = useState<EventPost | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [eventToEdit, setEventToEdit] = useState<EventPost | null>(null);
-    const [isUserModalOpen, setIsUserModalOpen] = useState(false); // ✅ new state for user modal
-
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const fetchEvents = async () => {
@@ -60,6 +59,7 @@ const AdminDashboard = () => {
 
     const handleGoToReports = () => {
         if (events.length > 0) {
+            alert("Still on working")
             setSelectedEvent(events[0]);
             setIsReportModalOpen(true);
         } else {
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
                     title="Manage User Details"
                     description="View all users, their tickets, and event participation."
                     buttonContent="Show Users"
-                    onButtonClick={handleManageUsers} // ✅ open user modal
+                    onButtonClick={handleManageUsers}
                 />
 
                 <div className="event-posts-list">

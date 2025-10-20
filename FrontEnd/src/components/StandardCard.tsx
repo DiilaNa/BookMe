@@ -16,7 +16,7 @@ const StandardEventCard: React.FC<StandardEventCardProps> = ({ event, onBuy }) =
         <div className="event-card standard-card">
             <div className="card-image-wrapper">
                 <img src={imageSrc} alt={event.title} className="event-image" />
-                <span className="card-price">${event.price.toFixed(2)}</span>
+                <span className="card-price">Rs.{event.price.toFixed(2)}</span>
             </div>
 
             <div className="card-body">

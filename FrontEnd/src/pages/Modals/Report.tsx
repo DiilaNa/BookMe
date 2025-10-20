@@ -1,11 +1,12 @@
 import React from 'react';
+import "../Styles/Reports.scss"
 
-interface TicketBuyer {
+/*interface TicketBuyer {
     id: number;
     name: string;
     email: string;
     ticketsPurchased: number;
-}
+}*/
 
 interface EventReport {
     id: string;
@@ -25,21 +26,11 @@ interface ReportModalProps {
     event: EventReport | null; // The event whose report is being viewed
 }
 
-const DUMMY_BUYERS: TicketBuyer[] = [
-    { id: 1, name: "Alice Johnson", email: "alice@example.com", ticketsPurchased: 2 },
-    { id: 2, name: "Bob Smith", email: "bob@example.com", ticketsPurchased: 1 },
-    { id: 3, name: "Charlie Brown", email: "charlie@example.com", ticketsPurchased: 4 },
-    { id: 4, name: "Diana Prince", email: "diana@example.com", ticketsPurchased: 2 },
-];
 
 const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, event }) => {
     if (!isOpen || !event) {
         return null;
     }
-
-   /* const imageSrc = event.eventImageBase64 || '/placeholder-event-image.svg';*/
-    const totalRevenue = DUMMY_BUYERS.reduce((sum, user) => sum + user.ticketsPurchased, 0) * event.price;
-    const ticketsSold = DUMMY_BUYERS.reduce((sum, user) => sum + user.ticketsPurchased, 0);
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -60,15 +51,15 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, event }) => 
                             <div className="key-stats">
                                 <div className="stat-box revenue">
                                     <h3>Total Revenue</h3>
-                                    <span>${totalRevenue.toFixed(2)}</span>
+                                    <span>{}</span>
                                 </div>
                                 <div className="stat-box sold">
                                     <h3>Tickets Sold</h3>
-                                    <span>{ticketsSold} / {event.totalSeats}</span>
+                                    <span>{} / {event.totalSeats}</span>
                                 </div>
                                 <div className="stat-box remaining">
                                     <h3>Seats Left</h3>
-                                    <span>{event.totalSeats - ticketsSold}</span>
+                                    {/*<span>{event.totalSeats - ticketsSold}</span>*/}
                                 </div>
                             </div>
                         </div>
@@ -82,7 +73,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, event }) => 
 
                         {/* 3. Ticket Buyers List */}
                         <div className="buyers-list-card">
-                            <h3>Ticket Buyers ({DUMMY_BUYERS.length})</h3>
+                           {/* <h3>Ticket Buyers ({DUMMY_BUYERS.length})</h3>*/}
                             <div className="buyers-table-container">
                                 <table>
                                     <thead>
@@ -93,13 +84,6 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, event }) => 
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {DUMMY_BUYERS.map(buyer => (
-                                        <tr key={buyer.id}>
-                                            <td>{buyer.name}</td>
-                                            <td>{buyer.email}</td>
-                                            <td>{buyer.ticketsPurchased}</td>
-                                        </tr>
-                                    ))}
                                     </tbody>
                                 </table>
                             </div>

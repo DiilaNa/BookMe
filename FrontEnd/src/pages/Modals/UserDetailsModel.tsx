@@ -57,7 +57,7 @@ const UserDetailsModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
                 <div className="search-section">
                     <div className="search-input-wrapper">
-                        <Search className="search-icon" size={18} />
+                        <Search className="search-icon" size={18}/>
                         <input
                             type="text"
                             placeholder="Search by email... "

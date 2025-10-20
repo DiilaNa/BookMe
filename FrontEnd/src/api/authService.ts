@@ -110,12 +110,12 @@ export const updateEvent = async (eventData: EventFormUpdate) => {
     return response.data;
 };
 
-export const getUserDetails = async (keyword: string) => {
-    const response = await api.get(`/admin/search`, {
-        params: { keyword },
-    });
-    return response.data;
-};
+// export const getUserDetails = async (keyword: string) => {
+//     const response = await api.get(`/admin/search`, {
+//         params: { keyword },
+//     });
+//     return response.data;
+// };
 
 export const getAllEvents = async (): Promise<UserEvent[]> => {
     const response = await api.get(`/user/loadEvents`);

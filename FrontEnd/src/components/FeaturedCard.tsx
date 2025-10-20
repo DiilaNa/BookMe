@@ -1,5 +1,3 @@
-// components/FeaturedEventCard.tsx
-
 import React from 'react';
 import type {UserEvent} from "../types/Events";
 interface FeaturedEventCardProps {
@@ -30,14 +28,14 @@ const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) =
                 <div className="event-meta">
                     <p>📍 {event.location}</p>
                     <p>⏰ {formattedDate}</p>
-                    <p><strong>💰 ${event.price.toFixed(2)}</strong></p>
+                    <p><strong>💰 Rs.{event.price.toFixed(2)}</strong></p>
                 </div>
 
                 {onBuy && (
                     <button
                         className={`buy-button ${event.isBought ? 'bought' : 'buy-now'}`}
                         onClick={() => !event.isBought && onBuy && onBuy(event)}
-                        disabled={event.isBought} // Disable the button if already bought
+                        disabled={event.isBought}
                     >
                         {event.isBought ? '🎟️ Bought' : 'Buy Now'}
                     </button>

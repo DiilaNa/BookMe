@@ -40,7 +40,7 @@ const EventPostCard: React.FC<EventPostCardProps> = ({ event , onEditClick }) =>
 
                 <div className="event-stats">
                     <span className="stat-item">🎫 Seats: {event.totalSeats}</span>
-                    <span className="stat-item">💲 Price: ${event.price.toFixed(2)}</span>
+                    <span className="stat-item">💲Price: Rs. {event.price.toFixed(2)}</span>
                 </div>
             </div>
 

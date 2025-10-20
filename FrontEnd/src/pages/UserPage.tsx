@@ -56,10 +56,8 @@ const UserEventsPage: React.FC = () => {
         };
         try {
             const result = await processPayment(paymentData);
-
             alert("Payment Successful! Ticket will be emailed to you.");
             console.log("Payment result:", result);
-
             setEvents(prevEvents =>
                 prevEvents.map(e =>
                     e.id === event.id

@@ -81,13 +81,6 @@ public class EventsServiceImpl implements EventsService {
     }
 
 
-
-    @Override
-    public List<EventsDTO> searchEvents(String email) {
-        List<Events> results = eventsRepository.searchEvents(email);
-        return results.stream().map(event -> modelMapper.map(event, EventsDTO.class)).collect(Collectors.toList());
-    }
-
     @Override
     public List<EventsDTO> loadAllEvents() {
         List<Events> events = eventsRepository.findAll();

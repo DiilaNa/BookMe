@@ -51,16 +51,4 @@ public class AdminController {
                 eventsDTOS
         ));
     }
-
-
-
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponseDto> searchEvents(@RequestParam(required = false) String email) {
-        List<EventsDTO> s =  eventsService.searchEvents(email);
-        return ResponseEntity.ok(new ApiResponseDto(
-                200,
-                "ok",
-                s
-        ));
-    }
 }

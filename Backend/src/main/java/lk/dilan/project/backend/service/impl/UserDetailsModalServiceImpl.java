@@ -24,6 +24,7 @@ public class UserDetailsModalServiceImpl implements UserDetailModalService {
     private final PaymentRepository paymentRepo;
     private final EventsRepository eventRepo;
 
+    @Override
     public List<UserSummaryDTO> getAllUserSummaries(String keyword) {
         List<User> users = (keyword == null || keyword.isEmpty())
                 ? userRepo.findAll()

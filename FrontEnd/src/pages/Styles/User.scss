@@ -20,7 +20,12 @@ $shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
 
   .page-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    margin-top: 2rem;
     margin-bottom: 3rem;
 
     h1 {

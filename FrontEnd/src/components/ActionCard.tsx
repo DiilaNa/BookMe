@@ -1,4 +1,4 @@
-import "./Styles/Card.scss";
+import "./Styles/ActionCard.scss";
 
  interface CardProps{
         icon:string,
