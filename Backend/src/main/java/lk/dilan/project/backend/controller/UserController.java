@@ -32,7 +32,6 @@ public class UserController {
 
     @PostMapping("/processPayment")
     public ResponseEntity<ApiResponseDto> processPayment(@RequestBody PaymentsDTO paymentsDTO){
-        System.out.println(paymentsDTO);
         paymentService.processPayment(paymentsDTO);
         return ResponseEntity.ok(new ApiResponseDto(
                 200,

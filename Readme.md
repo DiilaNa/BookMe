@@ -26,7 +26,8 @@ It simplifies  ticket booking and reporting providing a smooth experience for bo
 | **Frontend** | React + SASS/SCSS + TypeScript |
 | **Backend** | Spring Boot (Java 17) |
 | **Database** | MongoDB |
-|**Database Connectivity**| Ajax Requsets |
+| **Mail** | Google Simple Mail Transfer Protocol |
+| **Database Connectivity**| Ajax Requsets |
 | **Authentication** | JWT Token & Refresh Token |
 | **Build Tool** | Maven |
 | **Version Control** | Git & GitHub |
@@ -114,6 +115,8 @@ BookMe-Backend/
     npm run dev
 ```
 - The frontend will run on: http://localhost:5173
+
+- Change Application properties as you need (DB url , Smtp app password)
 
 ### 🔐 Authentication
 

@@ -1,11 +1,15 @@
-import React from 'react';
-import type {UserEvent} from "../types/Events";
+import React, { useState } from 'react';
+import type { UserEvent } from "../types/Events";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 interface FeaturedEventCardProps {
     event: UserEvent;
     onBuy?: (event: UserEvent) => Promise<void>;
 }
 
 const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) => {
+    const [isProcessing, setIsProcessing] = useState(false);
     const imageSrc = event.eventImageBase64 || '/placeholder-featured.jpg';
     const formattedDate = new Date(event.date).toLocaleDateString(undefined, {
         weekday: 'long',
@@ -14,6 +18,22 @@ const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) =
         hour: '2-digit',
         minute: '2-digit'
     });
+
+    const handleBuy = async () => {
+        if (!onBuy || event.isBought || isProcessing) return;
+
+        const confirmed = window.confirm(`Do you want to buy "${event.title}" for Rs.${event.price.toFixed(2)}?`);
+        if (!confirmed) return;
+
+        try {
+            setIsProcessing(true);
+            await onBuy(event);
+        } catch (err) {
+            console.error("Purchase failed:", err);
+            toast.error("error loading");
+            setIsProcessing(false);
+        }
+    };
 
     return (
         <div className="event-card featured-card">
@@ -34,12 +54,17 @@ const FeaturedEventCard: React.FC<FeaturedEventCardProps> = ({ event, onBuy }) =
                 {onBuy && (
                     <button
                         className={`buy-button ${event.isBought ? 'bought' : 'buy-now'}`}
-                        onClick={() => !event.isBought && onBuy && onBuy(event)}
-                        disabled={event.isBought}
+                        onClick={handleBuy}
+                        disabled={event.isBought || isProcessing}
                     >
-                        {event.isBought ? '🎟️ Bought' : 'Buy Now'}
+                        {event.isBought
+                            ? '🎟️ Bought'
+                            : isProcessing
+                                ? 'Processing...'
+                                : 'Buy Now'}
                     </button>
                 )}
+                <ToastContainer position="top-right" autoClose={3000} />
             </div>
         </div>
     );

@@ -52,9 +52,7 @@ public class TicketServiceImpl implements TicketService {
             Tickets savedTicket = ticketRepository.save(ticket);
 
 //            // 3️⃣ Send email with QR as attachment
-//            emailService.sendTicketEmail(email, savedTicket, qrBytes);
-            System.out.println("Email sending is currently disabled but will be sent to " + email +  "correctly");
-
+           emailService.sendTicketEmail(email, savedTicket, qrBytes);
             return savedTicket;
 
         } catch (Exception e) {
