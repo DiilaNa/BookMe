@@ -58,10 +58,6 @@ const UserEventsPage: React.FC = () => {
         };
         try {
             await processPayment(paymentData);
-            toast.success("Payment SuccessFull", {
-                autoClose: 3000,
-                pauseOnHover: true,
-            })
             setEvents(prevEvents =>
                 prevEvents.map(e =>
                     e.id === event.id
@@ -70,17 +66,20 @@ const UserEventsPage: React.FC = () => {
                 )
             );
 
+            toast.success("Payment SuccessFull", {
+                autoClose: 3000,
+                pauseOnHover: true,
+            })
+
         } catch (error) {
-            toast.error("Error")
-            console.log(error)
+            toast.error("Error", {
+                autoClose: 3000,
+                pauseOnHover: true,
+            })
         }
     };
 
     const handleSignOut = () => {
-        toast.info("SignOut from the Page", {
-            autoClose: 3000,
-            pauseOnHover: true,
-        })
         window.localStorage.clear();
         window.location.href = "/";
     };
@@ -115,10 +114,10 @@ const UserEventsPage: React.FC = () => {
                         {standardEvents.map(event => (
                             <StandardEventCard key={event.id} event={event} onBuy={handleBuyNow}/>
                         ))}
-                        <ToastContainer position="top-right" autoClose={3000} />
                     </div>
                 </section>
             )}
+            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     );
 };

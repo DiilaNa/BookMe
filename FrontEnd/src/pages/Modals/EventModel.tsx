@@ -125,7 +125,10 @@ const EventFormModal: React.FC<EventFormModalProps> = ({ isOpen, onClose, onSucc
             await postNewEvent(form);
             setForm(initialFormState);
             onSuccess(form.title);
-            toast.success("Saved successfully")
+            toast.success("Saved successfully",{
+                autoClose :3000,
+                pauseOnHover:true
+            })
         } catch (err) {
             setValidationErrors({ api: "Failed to post event. Check server status or file size." });
         } finally {

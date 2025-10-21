@@ -135,10 +135,15 @@ const EventEditModal: React.FC<EventEditModalProps> = ({ isOpen, onClose, eventT
         try {
             await updateEvent(form);
             onSuccess(form.title);
-            toast.success("Updated Successfully")
+            toast.success("Updated Successfully",{
+                autoClose :3000,
+                pauseOnHover:true
+            })
         } catch (err) {
-            console.error("Error updating event:", err);
-            toast.error("Failed to update")
+            toast.error("Failed to update",{
+                autoClose :3000,
+                pauseOnHover:true
+            })
             setValidationErrors({ api: "Failed to update event. Please try again." });
         } finally {
             setLoading(false);

@@ -56,11 +56,7 @@ const AdminDashboard = () => {
         fetchEvents();
     }, []);
 
-    const handleEventPosted = (title: string) => {
-        toast.success(`🎉 Event "${title}" successfully posted and ready for sale!`, {
-                autoClose: 3000,
-                pauseOnHover: true,
-            });
+    const handleEventPosted = () => {
         setIsModalOpen(false);
         fetchEvents();
     };
@@ -91,10 +87,6 @@ const AdminDashboard = () => {
     };
 
     const handleSignOut = () => {
-        toast.info("SignOut from the Page", {
-            autoClose: 3000,
-            pauseOnHover: true,
-        })
         window.localStorage.clear();
         window.location.href = "/";
     };
@@ -171,8 +163,8 @@ const AdminDashboard = () => {
                     <h2>Active Event Posts ({events.length})</h2>
                     {renderEventPosts()}
                 </div>
-                <ToastContainer position="top-right" autoClose={3000} />
             </div>
+            <ToastContainer position="top-right" autoClose={3000} />
 
             <EventFormModal
                 isOpen={isModalOpen}
